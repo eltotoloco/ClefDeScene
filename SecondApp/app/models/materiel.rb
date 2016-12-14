@@ -1,2 +1,0 @@
-class Materiel < ApplicationRecord
-end
