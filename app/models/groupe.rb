@@ -16,12 +16,6 @@ class Groupe < ApplicationRecord
   		all
   	end
   end
-  def self.searchDate(date)
-  	if search
-  		joins(:demande).where.not(:demandes => {:start_date => date})
-  	else
-  		all
-  	end
-  end
+ 
 
 end

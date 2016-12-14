@@ -11,10 +11,7 @@ class GroupesController < ApplicationController
 	end
 
 	def index
-		@groupes = Groupe.search(params)
-		if(params[:start_date].present?)
-			@groupes = Groupe.searchDate(params)
-		end
+		@groupes = Groupe.search(params[:search])
 		Rails.logger.debug @groupes.inspect
 		Rails.logger.debug @params.inspect
 	end
