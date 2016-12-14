@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SecondApp</title>
+	<%= csrf_meta_tags %>
+
+	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+	<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+	<%= stylesheet_link_tag "multiplestepform" %>
+	<%= stylesheet_link_tag "calendar" %>
+	<%= javascript_include_tag 'multiplestepform' %>
+	<%= javascript_include_tag 'demandes' %>
+
+</head>
+
+<body>
+	<div class="container">
+		<div id="navbar"> 
+			<%= render partial: 'static_pages/nav_bar' %>
+		</div>
+		<div id="searchbar">
+			<%= render partial: 'static_pages/search_bar' %>		
+		</div>
+		<% flash.each do |key, value| %>
+		<div class="alert alert-<%= key %>"><%= value %></div>
+		<% end %>
+		
+
+		<!-- the main section where all pages will be loaded using URL variables and PHP include() function -->
+		<div id="main">
+			<%= yield %>
+		</div>
+		<!-- close #container -->
+	</div>
+	
+	
+</body>
+</html>

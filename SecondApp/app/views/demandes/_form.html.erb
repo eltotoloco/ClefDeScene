@@ -1,0 +1,41 @@
+  <%= form_for(demande, :remote => true) do |f| %>
+  <% if demande.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(demande.errors.count, "error") %> prohibited this demande from being saved:</h2>
+
+    <ul>
+      <% demande.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <%= link_to "bleh", demandesU_path(:groupe_id => groupe_id), :remote => true %>
+
+
+  <div class="field">
+    <%= f.label :start_date %>
+    <div class="input-group date">
+      <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+    </div>
+  </div>
+  <%= f.hidden_field :end_date, value: :start_date %>
+
+  <%= f.hidden_field :groupe_id, value: groupe_id %>
+  <div id="demandesU"></div>
+  <script type="text/javascript">
+    $(document).ready(function(){
+
+    });
+  </script>
+
+  <div class="field">
+    <%= f.label :prix %>
+    <%= f.number_field :prix %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+  <% end %>

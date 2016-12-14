@@ -1,0 +1,20 @@
+<div class="row">
+	<%= form_tag groupes_path, :method => 'get', class: 'input-group'  do %>
+	<%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Search for...' %>
+	<div class="field">
+		<%= label :start_date %>
+		<div class="input-group date">
+		<%= text_field :start_date, params[:date],'data-behaviour' => 'datepicker' %>
+
+			<script type="text/javascript">
+				$('[data-behaviour~=datepicker]').datepicker({autoclose: true});
+			</script>
+
+			<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+		</div>
+	</div>
+	<span class="input-group-btn">
+		<%= submit_tag "Go!", class: "btn btn-default" %>
+	</span>
+	<% end %>
+</div>

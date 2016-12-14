@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Groupe:</strong>
+  <%= @groupe.name %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @demande.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @demande.end_date %>
+</p>
+
+<p>
+  <strong>Prix:</strong>
+  <%= @demande.prix %>
+</p>
+
+<p>
+  <strong>Statut:</strong>
+  <%= @demande.statut %>
+</p>
+
+<%= link_to 'Edit', edit_demande_path(@demande) %> |
+<%= link_to 'Back', demandes_path %>
