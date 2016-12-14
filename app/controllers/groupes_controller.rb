@@ -22,7 +22,7 @@ class GroupesController < ApplicationController
 
 	def getDemandesDates
 		demandes_dates = Demande.all(:joins => :groupes, 
-                    :conditions => ["groupe_id = ?", @groupe.id]).map(&:start_date)
+			:conditions => ["groupe_id = ?", @groupe.id]).map(&:start_date)
 	end
 
 	def create
@@ -57,17 +57,21 @@ end
 
 def destroy
 	Groupe.destroy(@groupe.id)
-		flash[:notice] = "Votre groupe a bien été supprimmé"
-		redirect_to my_profile_path
+	flash[:notice] = "Votre groupe a bien été supprimmé"
+	redirect_to my_profile_path
 	
 end
 
 
 private
 
-    def check_groupe!
-    	@groupe = Groupe.find(params[:id])
-    end
+def check_groupe!
+	if user_signed_in? && !params[:id].present?
+		@groupe = Groupe.find_by(user_id: current_user.id )
+	else
+		@groupe = Groupe.find(params[:id])
+	end
+end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def groupe_params
