@@ -1,0 +1,10 @@
+  <% provide(:title, "Edit groupe") %>
+  <h1>Modifier le groupe</h1>
+  <%= Rails.logger.debug groupe.inspect %>
+  <%= render partial: "form", locals: {groupe: groupe} %>
+  
+  <h3>Supprimer le groupe</h3>
+
+  <p>Unhappy? <%= button_to "Supprimer le groupe", groupe_path(groupe), data: { confirm: "Are you sure?" }, method: :delete %></p>
+
+  <%= link_to "Back", :back %>

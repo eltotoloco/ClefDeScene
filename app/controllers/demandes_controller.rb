@@ -1,5 +1,8 @@
 class DemandesController < ApplicationController
   before_action :set_demande, only: [:show, :edit, :update, :destroy]
+  has_scope :by_groupe
+  has_scope :by_user
+  has_scope :statut
 
   # GET /demandes
   # GET /demandes.json
@@ -12,14 +15,13 @@ class DemandesController < ApplicationController
   def show
     Rails.logger.debug @demande.inspect
     @user = User.find_by(id: @demande.user_id)
-    @groupe = Groupe.find_by(id: @demande.groupe_id)
+    @groupe = Groupe.by_id(@demande.groupe_id)
   end
 
   # GET /demandes/new
   def new
     @demande = Demande.new
-    @demandes = Demande.all
-
+    Rails.logger.debug "bleh"
   end
 
   # GET /demandes/1/edit
@@ -32,14 +34,16 @@ class DemandesController < ApplicationController
     @demande = Demande.new(demande_params)
     @demande.user_id = current_user.id
     Rails.logger.debug demande_params.inspect
+    Rails.logger.debug params.inspect 
     respond_to do |format|
       if @demande.save
-        format.html { redirect_to @demande, notice: 'Demande was successfully created.' }
-        format.json { render :show, status: :created, location: @demande }
+        UserMailer.welcome_email(User.by_id(Groupe.by_id(@demande.groupe_id).user_id)).deliver
+       format.js {}
       else
         format.html { render :new }
         format.json { render json: @demande.errors, status: :unprocessable_entity }
       end
+      Rails.logger.debug @demande.errors.full_messages
     end
   end
 
@@ -74,7 +78,7 @@ class DemandesController < ApplicationController
       @selected << d.start_date.strftime("%d/%m/%Y")
       @selected.first.gsub('&quot;','"')
     end
-        Rails.logger.debug @selected.inspect
+    Rails.logger.debug @selected.inspect
 
     respond_to do |format|
       format.js

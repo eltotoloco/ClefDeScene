@@ -6,6 +6,8 @@ class User < ApplicationRecord
   enum role: [:user, :bar, :groupe]
   has_many :demandes, :inverse_of => :user
 
+  scope :by_id, ->(id) {find(id)}
+
   after_initialize :set_default_role, :if => :new_record?
   def set_default_role
   	self.role ||= :user

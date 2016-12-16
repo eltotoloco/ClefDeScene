@@ -23,6 +23,14 @@ gem 'bootstrap-datepicker-rails'
 
 gem 'bootstrap_form'
 
+gem 'carrierwave', '>= 1.0.0.rc', '< 2.0'
+
+gem 'figaro'
+
+gem 'mini_magick'
+gem "fog-aws"
+
+gem 'has_scope'
 
 
 # Pagination

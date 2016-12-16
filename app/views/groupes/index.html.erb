@@ -2,23 +2,18 @@
 
 <h1>Groupes</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @groupes.each do |groupe| %>
-    <h2><%= groupe.name%><h2>
-      <tr>
-        <td></td>
-        <td><%= link_to 'Show', groupe %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+
+<% @groupes.each_slice(3) do |groupes| %>
+<div class="row">
+  <% groupes.each do |groupe| %>
+  <div class="col-md-3 col-md-offset-1">
+    <h3><%= groupe.name%></h3><%= image_tag groupe.avatar_url(:thumb) if groupe.avatar.url.present? %>
+    <%= link_to 'Show', groupe %>
+  </div>
+  <% end %>
+</div>
+<% end %>
 
 <br>
 

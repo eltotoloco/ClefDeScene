@@ -1,3 +1,4 @@
+<p><%= groupe_id %></p>
   <%= form_for(demande, :remote => true) do |f| %>
   <% if demande.errors.any? %>
   <div id="error_explanation">
@@ -11,24 +12,38 @@
   </div>
   <% end %>
 
-  <%= link_to "bleh", demandesU_path(:groupe_id => groupe_id), :remote => true %>
 
-
-  <div class="field">
+<div class="field">
     <%= f.label :start_date %>
     <div class="input-group date">
-      <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+    <%= f.text_field :start_date, :class => "data-provide" %>
+
+      <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
     </div>
   </div>
-  <%= f.hidden_field :end_date, value: :start_date %>
 
-  <%= f.hidden_field :groupe_id, value: groupe_id %>
-  <div id="demandesU"></div>
-  <script type="text/javascript">
-    $(document).ready(function(){
+  
 
+    <script type="text/javascript">
+    $('.data-provide').datepicker({
+      format: 'dd/mm/yyyy',
+      language: 'fr',
+      autoclose: true,
+      beforeShowDay: function(date){
+       var dates = <%= raw @datesPrises %>;
+       console.log(dates);
+        var dateFormatted = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
+        "/" + ((date.getMonth()+1) < 10 ? "0" + (date.getMonth()+1) : (date.getMonth()+1)) 
+        + "/" + date.getFullYear();
+        return dates.indexOf(dateFormatted) == -1
+      }
     });
   </script>
+  <%#= f.hidden_field :end_date, value: :start_date %>
+
+  <%= f.hidden_field :groupe_id, value: groupe_id %>
+
+  
 
   <div class="field">
     <%= f.label :prix %>

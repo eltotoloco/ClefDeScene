@@ -1,54 +1,9 @@
   <% provide(:title, "Edit groupe") %>
   <h1>Modifier le groupe</h1>
+  <%= render partial: "form", locals: {groupe: @groupe} %>
+  
+  <h3>Supprimer le groupe</h3>
 
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <%= nested_form_for(@groupe) do |f| %>
+  <p>Unhappy? <%= button_to "Supprimer le groupe", groupe_path(@groupe), data: { confirm: "Are you sure?" }, method: :delete %></p>
 
-
-      <div class="field">
-        <%= f.label :name %>
-        <%= f.text_field :name %>
-      </div>
-
-      <div class="field">
-        <%= f.label :date_de_creation %>
-        <%= f.date_field :date_de_creation %>
-      </div>
-
-      <div class="field">
-        <%= f.label :genre %>
-        <%= f.text_field :genre %>
-      </div>
-
-      <div class="field">
-        <%= f.label :description %>
-        <%= f.text_area :description, size: "60x12" %>
-      </div>
-
-      <h3>Membres: </h3>
-      <ul id="membres">
-        <%= f.fields_for :membres do |membres_form| %>
-        <li>
-          <%= membres_form.label :nom %>
-          <%= membres_form.text_field :nom %>
-
-          <%= membres_form.label :instrument %>
-          <%= membres_form.text_field :instrument %>
-          <%= membres_form.link_to_remove "Remove this membre" %>
-        </li>
-        <% end %>
-        <p><%= f.link_to_add "Add a task", :membres, :data => { :target => "#membres" } %></p>
-      </ul>
-
-
-      <div class="actions">
-        <%= f.submit "Update" %>
-      </div>
-      <% end %>
-
-      <h3>Supprimer le groupe</h3>
-
-      <p>Unhappy? <%= button_to "Supprimer le groupe", groupe_path(@groupe), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-      <%= link_to "Back", :back %>
+  <%= link_to "Back", :back %>

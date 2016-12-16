@@ -1,10 +1,16 @@
 <h2>Sign up</h2>
 
-<%= nested_form_for @groupe, url: {action: "create"} do |f| %>
+<%= nested_form_for @groupe, url: {action: "create"}, :html => {:multipart => true} do |f| %>
 
 <div class="field">
 	<%= f.label :name %>
 	<%= f.text_field :name %>
+</div>
+<div class="field">
+  <%= f.label :avatar do %>
+  <%= f.file_field :avatar %>
+  <%= f.hidden_field :avatar_cache %>
+  <% end %>
 </div>
 
 <div class="field">
@@ -31,7 +37,7 @@
     <%= membres_form.text_field :nom %>
 
     <%= membres_form.label :instrument %>
-    <%= membres_form.select(:instrument, options_for_select(Materiel.all.map(&:libelle))) %>
+    <%= membres_form.select(:instrument, options_for_select(Materiel.all.map(&:libelle)),prompt: true) %>
 
     <%= membres_form.link_to_remove "Supprimer ce membre" %>
 

@@ -1,14 +1,14 @@
 class ProfilesController < ApplicationController
-    before_filter :authenticate_user!
+  before_filter :authenticate_user!
 
-    before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :set_profile, only: [:show, :edit, :update, :destroy]
 
-    def new
-      @user = User.new
+  def new
+    @user = User.new
   end
 
   def index
-      @users = User.all
+    @users = User.all
   end
 
   def show
@@ -34,17 +34,16 @@ class ProfilesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_profile
-
       @user = current_user
-      @groupe = Groupe.find_by(user_id: @user.id)
-      @demandesUser = Demande.where(user_id: @user.id)
+      @groupe = Groupe.find_by(user_id: @user.id) 
       if(@groupe.present?)
-      @demandesGroupe = Demande.where(groupe_id: @groupe.id)
+        @demandes = Demande.by_groupe(@groupe.id)
+      else
+        @demandes = Demande.by_user(current_user.id)
+      end
+      Rails.logger.debug @demandes.inspect
+      
     end
-
-    Rails.logger.debug @demandesGroupe.inspect
-    Rails.logger.debug @demandesUser.inspect
-  end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
@@ -53,4 +52,4 @@ class ProfilesController < ApplicationController
 
 
 
-end
+  end

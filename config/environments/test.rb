@@ -48,6 +48,9 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
 
+      config.autoload_paths += %W["#{config.root}/app/validators/"]
+
+
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.

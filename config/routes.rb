@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :demandes
+  resources :demandes, only: [:new, :create, :update,:delete]
   root 'static_pages#home'
   get '/home' => "static_pages#home"
 
@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   get '/monProfile'  => "profiles#show", as: :my_profile
   get '/monGroupe' => "groupes#edit", as: :my_groupe
 
-  get "/demandesU" => 'demandes#from_category', as: 'demandesU'
+#  get "/demandesU" => 'demandes#from_category', as: 'demandesU'
 
   resources :groupes
 

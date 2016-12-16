@@ -3,7 +3,7 @@
      	language: 'fr',
      	autoclose: true,
      	beforeShowDay: function(date){
-     		var dates = <%= raw @selected %>;
+     		var dates = <%= raw @datesPrises %>;
      		var dateFormatted = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
      		"/" + ((date.getMonth()+1) < 10 ? "0" + (date.getMonth()+1) : (date.getMonth()+1)) 
      		+ "/" + date.getFullYear();

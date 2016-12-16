@@ -1,36 +1,39 @@
 class UsersController < ApplicationController
 	before_action :set_user, only: [:show, :edit, :update, :destroy]
+    has_scope :by_id
+    def new
+      @user = User.new
+  end
 
-	def new
-		@user = User.new
-	end
+  def index
+      @users = User.all
+  end
 
-	def index
-		@users = User.all
-	end
+  def show
+    Rails.logger.debug @user.inspect
+end
 
-	def show
-        Rails.logger.debug @user.inspect
-    end
+def create
 
-    def create
+end
 
-    end
+def edit
+ respond_to do |format|
+    format.html
+    format.js
+end
+end
 
-    def edit
+def update
 
-    end
+end
 
-    def update
+def destroy
 
-    end
-
-    def destroy
-
-    end
+end
 
 
-    private
+private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
     	if params[:id].present?
