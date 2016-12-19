@@ -72,7 +72,7 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
 
-    config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+    config.action_mailer.default_url_options = { host: 'polar-coast-16419.herokuapp.com' }
  
   config.action_mailer.smtp_settings = {
     user_name:      Rails.application.secrets.mail_username,
