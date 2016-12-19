@@ -71,6 +71,25 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
+   
+  config.action_mailer.smtp_settings = {
+    user_name:      Rails.application.secrets.mail_username,
+    password:       Rails.application.secrets.mail_password,
+    domain:         'gmail.com',
+    address:       'smtp.gmail.com',
+    port:          '587',
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
+
+  
+  config.i18n.load_path += Dir[Rails.root.join('devise', 'locales', '*.{rb,yml}').to_s]
+  I18n.enforce_available_locales = false
+  I18n.config.available_locales = "fr"
+  config.i18n.default_locale = "fr"
+
+
+
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
