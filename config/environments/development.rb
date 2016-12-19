@@ -14,11 +14,6 @@ config.enable_processing = true
   config.consider_all_requests_local = true
 
 
-  config.i18n.load_path += Dir[Rails.root.join('devise', 'locales', '*.{rb,yml}').to_s]
-  I18n.enforce_available_locales = false
-  I18n.config.available_locales = "fr"
-  config.i18n.default_locale = "fr"
-
   # Enable/disable caching. By default caching is disabled.
   if Rails.root.join('tmp/caching-dev.txt').exist?
     config.action_controller.perform_caching = true
@@ -55,6 +50,13 @@ config.enable_processing = true
     authentication: :plain,
     enable_starttls_auto: true
   }
+
+  
+  config.i18n.load_path += Dir[Rails.root.join('devise', 'locales', '*.{rb,yml}').to_s]
+  I18n.enforce_available_locales = false
+  I18n.config.available_locales = "fr"
+  config.i18n.default_locale = "fr"
+
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
