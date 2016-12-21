@@ -1,34 +1,45 @@
 <h2>Sign up</h2>
 
-<%= form_for @user, url: {action: "create"} do |f| %>
-  <%= devise_error_messages! %>
+<%= bootstrap_form_for @user, { url: {action: "create"}, validate: false} do |f| %>
+<%= devise_error_messages! %>
 
 <%= radio_button_tag(:role, User.roles[:groupe]) %>
 <%= label_tag(:role_groupe, "Je suis un groupe") %>
 <%= radio_button_tag(:role, User.roles[:user]) %>
 <%= label_tag(:role_user, "Je cherche un groupe") %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+<div class="row">
+  <div class="col-sm-4">
+    <%= f.label :nom %>
+    <%= f.text_field :nom,hide_label: true, autofocus: true %>
   </div>
+</div>
+<div class="row">
 
-  <div class="field">
+  <div class="col-sm-4">
+    <%= f.label :email %>
+    <%= f.email_field :email,hide_label: true %>
+  </div>
+</div>
+<div class="row">
+
+  <div class="col-sm-4">
     <%= f.label :password %>
     <% if @minimum_password_length %>
     <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
+    <% end %>
+    <%= f.password_field :password,hide_label: true, autocomplete: "off" %>
   </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+  <div class="col-sm-4">
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation,hide_label: true, autocomplete: "off" %>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
+</div>
+</div>
+<div class="actions">
+  <%= f.submit "Sign up" %>
+</div>
 <% end %>
 
 <%= render "users/shared/links" %>

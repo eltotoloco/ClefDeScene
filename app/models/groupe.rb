@@ -20,9 +20,16 @@ class Groupe < ApplicationRecord
  accepts_nested_attributes_for :utilises, :allow_destroy => true, reject_if: ->(attributes){ attributes['materiel'].blank? }
   #validation
   validates :name, uniqueness: { case_sensitive: false }, presence: true
-  validates_presence_of   :avatar
+  validates :date_de_creation, presence: true
+  validates :genre,presence: true
   validates_integrity_of  :avatar
   validates_processing_of :avatar
+
+  include MultiStepModel
+
+  def self.total_steps
+    3
+  end
 
 
 end

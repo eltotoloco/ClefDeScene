@@ -32,6 +32,10 @@ gem "fog-aws"
 
 gem 'has_scope'
 
+gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations', branch: 'rails5'
+
+gem 'wicked'
+
 
 # Pagination
 gem 'kaminari'
@@ -41,6 +45,7 @@ gem 'autoprefixer-rails'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
+
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 

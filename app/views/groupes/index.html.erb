@@ -8,8 +8,9 @@
 <div class="row">
   <% groupes.each do |groupe| %>
   <div class="col-md-3 col-md-offset-1">
-    <h3><%= groupe.name%></h3><%= image_tag groupe.avatar_url(:thumb) if groupe.avatar.url.present? %>
-    <%= link_to 'Show', groupe %>
+    <h3><%= groupe.name%></h3>
+    <%= image_tag groupe.avatar_url(:thumb) if groupe.avatar.url.present? %>
+    <%= link_to  I18n.t('button.show'), groupe %>
   </div>
   <% end %>
 </div>

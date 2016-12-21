@@ -41,10 +41,10 @@
 
         <%= membres_form.label :instrument %>
         <%= membres_form.text_field :instrument %>
-        <%= membres_form.link_to_remove "Remove this membre" %>
+        <%= membres_form.link_to_remove I18n.t('button.destroy'), :class =>"btn btn-danger" %>
       </li>
       <% end %>
-      <p><%= f.link_to_add "Add a task", :membres, :data => { :target => "#membres" } %></p>
+      <p><%= f.link_to_add I18n.t('button.add'), :membres, :data => { :target => "#membres" } %></p>
     </ul>
 
 

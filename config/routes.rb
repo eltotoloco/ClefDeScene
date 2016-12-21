@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  namespace :groupes do
+    get 'steps_controller/show'
+  end
+
+  namespace :groupes do
+    get 'steps_controller/update'
+  end
+
   resources :demandes, only: [:new, :create, :update,:delete]
   root 'static_pages#home'
   get '/home' => "static_pages#home"
@@ -6,7 +14,6 @@ Rails.application.routes.draw do
   get '/help' => "static_pages#help"
 
   get '/about' => "static_pages#about"
-  get '/inscription' => "static_pages#inscription"
   get '/welcome' => "static_pages#welcome"
   devise_for :users, controllers: {
    sessions: 'users/sessions',

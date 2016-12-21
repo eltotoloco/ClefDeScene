@@ -5,6 +5,7 @@ class User < ApplicationRecord
   :recoverable, :rememberable, :trackable, :validatable, :confirmable
   enum role: [:user, :bar, :groupe]
   has_many :demandes, :inverse_of => :user
+  validates :nom, presence: true
 
   scope :by_id, ->(id) {find(id)}
 
