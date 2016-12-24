@@ -1,0 +1,52 @@
+<p id="notice"><%= notice %></p>
+
+<div id="fiche">
+
+	<div class="row">
+
+		<div class="col-md-8 col-md-offset-1">
+
+			<p>
+				<strong>Groupe:</strong>
+				<%= @annonce.name %>
+			</p>
+
+			<p>
+				<strong>Date de création :</strong>
+				<%= @annonce.experience %>
+			</p>
+
+			<%= image_tag @annonce.avatar.url if @annonce.avatar.url.present? %>
+
+
+			<p>
+				<strong>Genre:</strong>
+				<%= @annonce.style %>
+			</p>
+
+			<p>
+				<strong>Membre(s):</strong>
+				<% @annonce.membres.each do |membre| %>
+				<%= render :partial => "membres/show", :locals => {:membre => membre} %>
+				<% end %>
+			</p>
+
+
+			<p>
+				<strong>Description:</strong>
+				<%= @annonce.description %>
+			</p>
+		</div>
+		<div class="col-md-3">
+
+			<% if user_signed_in? && @annonce.user_id != current_user.id%>
+			<%= render :partial => "demandes/new", :locals => {:annonce => @annonce, :datesPrises => @datesPrises} %>
+			<% end %>
+		</div>
+
+	</div>
+	<%= link_to 'Edit', sti_annonce_path(@type, @annonce, :edit) %> |
+	<%= link_to I18n.t('button.back'), sti_annonce_path(@type, nil) %>
+
+</div>
+

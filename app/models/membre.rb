@@ -1,3 +1,3 @@
 class Membre < ApplicationRecord
-	  belongs_to :groupe
+	  belongs_to :annonce
 end

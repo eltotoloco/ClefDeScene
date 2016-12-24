@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<% libelle = "annonces.types.#{@type}s".downcase %>
+<h1>Annonces  <%=  I18n.t(libelle).downcase %></h1>
+
+
+<% @annonces.each_slice(3) do |annonces| %>
+<div class="row">
+  <% annonces.each do |annonce| %>
+  <div class="col-md-3 col-md-offset-1">
+    <h3><%= annonce.name%></h3>
+    <%= image_tag annonce.avatar_url(:thumb) if annonce.avatar.url.present? %>
+    <%= link_to  I18n.t('button.show'), annonce %>
+  </div>
+  <% end %>
+</div>
+<% end %>
+
+<br>
+<div id="content"></div>
+
+<% if @type != "Annonce" %>
+<%= link_to "New #{@type}", sti_annonce_path(@type, nil, :new) %>
+<% end %>

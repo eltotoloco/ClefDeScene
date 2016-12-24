@@ -16,6 +16,11 @@
 </div>
 <% end %>
 
+<%= link_to "Index", sti_annonce_path(Annonce.types.first, nil), :remote => true %></li>
+
+
+<div id="content"></div>
+
 <br>
 
 <%= link_to 'New Groupe', new_groupe_path %>

@@ -3,10 +3,7 @@
 <%= bootstrap_form_for @user, { url: {action: "create"}, validate: false} do |f| %>
 <%= devise_error_messages! %>
 
-<%= radio_button_tag(:role, User.roles[:groupe]) %>
-<%= label_tag(:role_groupe, "Je suis un groupe") %>
-<%= radio_button_tag(:role, User.roles[:user]) %>
-<%= label_tag(:role_user, "Je cherche un groupe") %>
+
 
 <div class="row">
   <div class="col-sm-4">

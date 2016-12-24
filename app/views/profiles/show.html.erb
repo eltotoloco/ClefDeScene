@@ -1,4 +1,4 @@
-<h2>Ceci est le profile de <%= @user.email %></h2>
+<h2>Ceci est le profile de <%= @user.nom %></h2>
 
 <%= link_to "Editer mon compte", edit_user_registration_path %>
 
@@ -20,6 +20,7 @@
 </div>
 
 
+<h2> Votre Page </h2>
 <% if @groupe.present? %>
 <h2> Votre groupe <%= @groupe.name %> </h2>
 <%= link_to "Cliquer ici pour modifier votre groupe", my_groupe_path %>

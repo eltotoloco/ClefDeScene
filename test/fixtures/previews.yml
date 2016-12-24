@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 1
+  file: MyString
+  annonce: one
+
+two:
+  type: 1
+  file: MyString
+  annonce: two

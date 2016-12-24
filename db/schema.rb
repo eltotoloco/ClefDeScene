@@ -10,14 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161220160021) do
+ActiveRecord::Schema.define(version: 20161223153041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "annonces", force: :cascade do |t|
+    t.string   "name"
+    t.string   "avatar"
+    t.date     "experience"
+    t.text     "description"
+    t.string   "type"
+    t.string   "style"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_annonces_on_user_id", using: :btree
+  end
+
+  create_table "availabilities", force: :cascade do |t|
+    t.integer  "annonce_id"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["annonce_id"], name: "index_availabilities_on_annonce_id", using: :btree
+  end
+
   create_table "demandes", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "groupe_id"
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "prix"
@@ -25,9 +46,20 @@ ActiveRecord::Schema.define(version: 20161220160021) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.text     "description"
-    t.index ["groupe_id", "start_date"], name: "index_demandes_on_groupe_id_and_start_date", unique: true, using: :btree
-    t.index ["groupe_id"], name: "index_demandes_on_groupe_id", using: :btree
+    t.integer  "annonce_id"
+    t.index ["annonce_id"], name: "index_demandes_on_annonce_id", using: :btree
     t.index ["user_id"], name: "index_demandes_on_user_id", using: :btree
+  end
+
+  create_table "establishments", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "address"
+    t.json     "pictures"
+    t.string   "phone_number"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["user_id"], name: "index_establishments_on_user_id", using: :btree
   end
 
   create_table "groupes", force: :cascade do |t|
@@ -64,10 +96,19 @@ ActiveRecord::Schema.define(version: 20161220160021) do
   create_table "membres", force: :cascade do |t|
     t.string   "nom"
     t.string   "instrument"
-    t.integer  "groupe_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["groupe_id"], name: "index_membres_on_groupe_id", using: :btree
+    t.integer  "annonce_id"
+    t.index ["annonce_id"], name: "index_membres_on_annonce_id", using: :btree
+  end
+
+  create_table "previews", force: :cascade do |t|
+    t.integer  "type"
+    t.string   "file"
+    t.integer  "annonce_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["annonce_id"], name: "index_previews_on_annonce_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -94,20 +135,24 @@ ActiveRecord::Schema.define(version: 20161220160021) do
   end
 
   create_table "utilises", force: :cascade do |t|
-    t.integer "groupe_id"
     t.integer "materiel_id"
     t.integer "quantite"
-    t.index ["groupe_id"], name: "index_utilises_on_groupe_id", using: :btree
+    t.integer "annonce_id"
+    t.index ["annonce_id"], name: "index_utilises_on_annonce_id", using: :btree
     t.index ["materiel_id"], name: "index_utilises_on_materiel_id", using: :btree
   end
 
-  add_foreign_key "demandes", "groupes"
+  add_foreign_key "annonces", "users"
+  add_foreign_key "availabilities", "annonces"
+  add_foreign_key "demandes", "annonces"
   add_foreign_key "demandes", "users"
+  add_foreign_key "establishments", "users"
   add_foreign_key "groupes", "users"
   add_foreign_key "histo_demandes", "demandes"
   add_foreign_key "histo_demandes", "groupes"
   add_foreign_key "histo_demandes", "users"
-  add_foreign_key "membres", "groupes"
-  add_foreign_key "utilises", "groupes"
+  add_foreign_key "membres", "annonces"
+  add_foreign_key "previews", "annonces"
+  add_foreign_key "utilises", "annonces"
   add_foreign_key "utilises", "materiels"
 end

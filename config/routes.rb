@@ -1,20 +1,18 @@
 Rails.application.routes.draw do
-  namespace :groupes do
-    get 'steps_controller/show'
-  end
-
-  namespace :groupes do
-    get 'steps_controller/update'
-  end
-
   resources :demandes, only: [:new, :create, :update,:delete]
+  get '/annonces/new' => "static_pages#annonce", as: :new_annonce
+
+  resources :annonces, except: :new
+  resources :groups, controller: 'annonces', type: 'Group' 
+  resources :photographers, controller: 'annonces', type: 'Photographer' 
+  
   root 'static_pages#home'
   get '/home' => "static_pages#home"
 
   get '/help' => "static_pages#help"
 
-  get '/about' => "static_pages#about"
-  get '/welcome' => "static_pages#welcome"
+  get '/about' => "static_pages#about", as: :additional_infos
+  get '/welcome' => "static_pages#welcome", as: :welcome
   devise_for :users, controllers: {
    sessions: 'users/sessions',
    registrations: 'users/registrations',
@@ -30,7 +28,14 @@ Rails.application.routes.draw do
 
 #  get "/demandesU" => 'demandes#from_category', as: 'demandesU'
 
-  resources :groupes
+resources :groupes, only: [:new, :create, :show, :index] do
+  resources :steps, only: [:show, :update], controller: 'groupes/steps'
+end
+
+  get '/catalogue' => "annonces#catalogue", as: :catalogue
+
+
+
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

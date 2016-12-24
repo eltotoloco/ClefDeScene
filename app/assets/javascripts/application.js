@@ -15,7 +15,9 @@
 //= require jquery_nested_form
 //= require turbolinks
 //= require bootstrap-sprockets
-//= require moment
+//= require formToWizard
+//= require rails.validations
+//= require rails.validations.nested_form
 //= require daterangepicker
 //= require bootstrap/modal
 //= require bootstrap-datepicker

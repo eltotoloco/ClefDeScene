@@ -13,4 +13,8 @@ class StaticPagesController < ApplicationController
 
 	def welcome
 	end
+
+
+	def annonce
+	end
 end

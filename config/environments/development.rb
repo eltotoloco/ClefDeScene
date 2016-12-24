@@ -74,8 +74,12 @@ config.enable_processing = true
     config.autoload_paths += %W["#{config.root}/app/validators/"]
 
   # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  config.action_view.raise_on_missing_translations = true
 
+
+config.action_view.field_error_proc = Proc.new { |html_tag, instance| 
+  "<div class=\"field_with_errors control-group error\">#{html_tag}</div>".html_safe
+}
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker

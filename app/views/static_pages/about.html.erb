@@ -1,2 +1,23 @@
 <h1>StaticPages#about</h1>
 <p>Find me in app/views/static_pages/about.html.erb</p>
+
+<ul class="nav nav-pills">
+	<% Annonce.types.each do |type| %>
+		<li id='<%= type %>'role="presentation" class="active">
+		<% libelle = "annonces.types.#{type}s".downcase %>
+		<a href="">
+			
+
+		</a>
+				<%= link_to I18n.t(libelle), sti_annonce_path(type, nil) %>
+
+		</li>
+	<% end %>
+</ul>
+
+
+<div id="content">
+	
+
+
+</div>

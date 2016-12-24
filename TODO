@@ -1,0 +1,20 @@
+Ajouter une messagerie interne pour discussion groupes/recherche
+Retirer le matos à l'inscription et le mettre en notice à la création de demande
+Ajouter la notion d'évenement bar/groupe dans une nouvelle page (voir api facebook pour création d'event)
+
+
+Inscription groupe:
+	-ajouter champs localisation (limite à paris pour le moment)
+	-ajouter prix minimum par préstation
+	-ajouter une adresse e-mail aux membres du groupes pour les notifs de demandes ?
+
+Ajouter une descirption à la création de demande
+
+
+Inscription bar :
+	-nom 
+	-adresse
+	-photos
+	-descripiton
+	-N°
+

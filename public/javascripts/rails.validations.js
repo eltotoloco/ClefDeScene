@@ -169,6 +169,7 @@
     form: function(form) {
       var $form, binding, event, ref;
       $form = $(form);
+
       form.ClientSideValidations = {
         settings: window.ClientSideValidations.forms[$form.attr('id')],
         addError: function(element, message) {

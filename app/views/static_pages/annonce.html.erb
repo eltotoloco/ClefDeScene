@@ -1,0 +1,9 @@
+<% Annonce.types.each do |type| %>
+<li id='<%= type %>'>
+	<% libelle = "annonces.types.#{type}s".downcase %>
+	<a href="">
+	</a>
+	<%= link_to I18n.t(libelle), sti_annonce_path(type, nil, :new), :class => "btn" %>
+
+</li>
+<% end %>

@@ -1,6 +1,17 @@
+ <% if resource.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(resource.errors.count, "error") %> prohibited this resource from being saved:</h2>
+
+    <ul>
+      <% resource.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
 <h2>Log in</h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+<%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true %>

@@ -1,0 +1,17 @@
+<% if @groupe.errors.any? %>
+  <div id="errors">
+    <ul>
+    <% @groupe.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= bootstrap_nested_form_for build_groupe(@groupe) do |f| %>
+  <% if params[:all].nil? %>
+    <%= render 'groupes/steps/current_step', f: f %>
+  <% else %>
+    <%= render 'groupes/steps/all_steps', f: f %>
+  <% end %>
+<% end %>

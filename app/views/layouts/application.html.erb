@@ -7,8 +7,10 @@
 	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 	<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 	<%= stylesheet_link_tag "multiplestepform" %>
-	<%= stylesheet_link_tag "calendar" %>
 	<%= javascript_include_tag 'multiplestepform' %>
+	<%= stylesheet_link_tag "multiplestepform2" %>
+	<%= javascript_include_tag 'multiplestepform2' %>
+	<%= stylesheet_link_tag "calendar" %>
 	<%= javascript_include_tag 'demandes' %>
 
 </head>
@@ -18,7 +20,7 @@
 		<div id="navbar"> 
 			<%= render partial: 'static_pages/nav_bar' %>
 		</div>
-			<%= render partial: 'static_pages/search_bar' %>		
+		<%= render partial: 'static_pages/search_bar' %>		
 
 
 		<!-- the main section where all pages will be loaded using URL variables and PHP include() function -->

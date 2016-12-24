@@ -8,12 +8,23 @@ fr:
       user:
         password: Mot de passe
         password_confirmation: Confirmation du mot de passe
+      group:
+        experience: Date de création
+        style: Genre
+      annonce: 
+        name: "Nom"
+
     errors:
       messages:
         record_invalid: 'La validation a échoué : %{errors}'
         restrict_dependent_destroy:
           has_one: "Vous ne pouvez pas supprimer l'enregistrement car une personne à charge %{record} existe"
           has_many: "Vous ne pouvez pas supprimer l'enregistrement parce que les %{record} dépendants existent"
+  annonces:
+    types:
+        groups: "Groupes"
+        photographers: "Photographes"
+        annonces: "Annonces"
   button:
     show: Voir
     add: Ajouter

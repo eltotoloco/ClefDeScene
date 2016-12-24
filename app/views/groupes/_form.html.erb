@@ -1,3 +1,14 @@
+<% if @groupe.errors.any? %>
+  <div id="errors">
+    <ul>
+    <% @groupe.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
   <%= nested_form_for(groupe) do |f| %>

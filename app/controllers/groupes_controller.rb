@@ -46,14 +46,11 @@ def getDemandesDates
 end
 
 def create
-
 	@groupe = Groupe.new(groupe_params)
 	@groupe.user_id = current_user.id
-	#Rails.logger.debug @groupe.inspect
-
 	Rails.logger.debug "------- BLEEEh " 
 	Rails.logger.debug groupe_params.inspect
-		
+
 	
 	@groupe.save
 	if @groupe.persisted?

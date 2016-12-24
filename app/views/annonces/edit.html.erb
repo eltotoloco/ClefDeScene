@@ -1,0 +1,6 @@
+<h1>Editing Annonce</h1>
+
+<%= render "form", annonce: @annonce %>
+
+<%= link_to 'Show', @annonce %> |
+<%= link_to I18n.t('button.back'), sti_annonce_path(@type, nil) %>

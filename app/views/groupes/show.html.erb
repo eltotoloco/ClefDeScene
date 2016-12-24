@@ -2,39 +2,50 @@
 <p id="notice"><%= notice %></p>
 
 <div id="fiche">
-	
-<p>
-  <strong>Groupe:</strong>
-  <%= @groupe.name %>
-</p>
 
-<p>
-  <strong>Date de création :</strong>
-  <%= @groupe.date_de_creation %>
-</p>
+  <div class="row">
 
-<%= image_tag @groupe.avatar.url if @groupe.avatar.url.present? %>
+  <div class="col-md-8 col-md-offset-1">
 
+      <p>
+        <strong>Groupe:</strong>
+        <%= @groupe.name %>
+      </p>
 
-<p>
-  <strong>Genre:</strong>
-  <%= @groupe.genre %>
-</p>
+      <p>
+        <strong>Date de création :</strong>
+        <%= @groupe.date_de_creation %>
+      </p>
 
-<p>
-  <strong>Membre(s):</strong>
-  <% @membres.each do |membre| %>
-  <%= render :partial => "membres/show", :locals => {:membre => membre} %>
-  <% end %>
-</p>
+      <%= image_tag @groupe.avatar.url if @groupe.avatar.url.present? %>
 
 
-<p>
-  <strong>Description:</strong>
-  <%= @groupe.description %>
-</p>
+      <p>
+        <strong>Genre:</strong>
+        <%= @groupe.genre %>
+      </p>
 
-  <%= render :partial => "demandes/new", :locals => {:groupe => @groupe, :datesPrises => @datesPrises} %>
+      <p>
+        <strong>Membre(s):</strong>
+        <% @membres.each do |membre| %>
+        <%= render :partial => "membres/show", :locals => {:membre => membre} %>
+        <% end %>
+      </p>
 
 
-<%= link_to 'Back', groupes_path %>
+      <p>
+        <strong>Description:</strong>
+        <%= @groupe.description %>
+      </p>
+    </div>
+    <div class="col-md-3">
+
+      <% if user_signed_in? && @groupe.user_id != current_user.id%>
+      <%= render :partial => "demandes/new", :locals => {:groupe => @groupe, :datesPrises => @datesPrises} %>
+      <% end %>
+    </div>
+
+  </div>
+      <%= link_to I18n.t('button.back'), groupes_path %>
+
+</div>

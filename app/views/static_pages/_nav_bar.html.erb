@@ -13,16 +13,35 @@
 				<li class="active"><a href="/home">Home</a></li>
 				<li><a href="/help">Help</a></li>
 				<li><a href="/about">About</a></li>
-				<li><%= link_to "Groupes", groupes_path %></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Annonces <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li id='toutes' role="presentation" > 
+						<%= link_to "Toutes", sti_annonce_path('Annonce' , nil) %>
+						</li>
+						<% Annonce.types.each do |type| %>
+						<li id='<%= type %>'>
+							<% libelle = "annonces.types.#{type}s".downcase %>
+							<a href="">
+
+
+							</a>
+							<%= link_to I18n.t(libelle), sti_annonce_path(type, nil) %>
+
+						</li>
+						<% end %>
+					</ul>
+				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li>
 					<% if user_signed_in? %>
-					<a href="/monProfile"><%= current_user.email %> </a></li>
+					<%= link_to "Montez sur scène", new_annonce_path%></li>
+					<li><a href="/monProfile"><%= current_user.email %> </a></li>
 					<li><%= link_to "Déconnexion", destroy_user_session_path, :method => :delete %>
 						<% else %>
 						<%= link_to "Connexion", new_user_session_path %></li>
-						<li><a href="/inscription">Inscription</a>
+						<li><%= link_to "Inscription", new_user_registration_path %>
 							<% end %> 
 						</li> 
 					</ul>

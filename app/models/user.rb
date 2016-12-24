@@ -6,6 +6,7 @@ class User < ApplicationRecord
   enum role: [:user, :bar, :groupe]
   has_many :demandes, :inverse_of => :user
   validates :nom, presence: true
+  has_many :groupes, dependent: :delete_all
 
   scope :by_id, ->(id) {find(id)}
 

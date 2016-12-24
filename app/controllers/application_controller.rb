@@ -7,7 +7,10 @@ class ApplicationController < ActionController::Base
 
 
 	def after_sign_in_path_for(resource_or_scope)
-		Rails.logger.debug current_user.inspect
-		my_profile_path
+		if(current_user.sign_in_count ==1)
+			welcome_path
+		else
+			my_profile_path
+		end
 	end
 end

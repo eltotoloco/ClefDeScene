@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<div id="fiche">
+
+	<div class="row">
+
+		<div class="col-md-8 col-md-offset-1">
+
+			<p>
+				<strong>Groupe:</strong>
+				<%= annonce.name %>
+			</p>
+
+			<p>
+				<strong>Date de création :</strong>
+				<%= annonce.experience %>
+			</p>
+
+			<%= image_tag annonce.avatar.url if annonce.avatar.url.present? %>
+
+
+			<p>
+				<strong>Genre:</strong>
+				<%= annonce.style %>
+			</p>
+
+
+	</div>
+</div>
+

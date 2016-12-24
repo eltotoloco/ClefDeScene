@@ -1,0 +1,81 @@
+  <%= nested_form_for @groupe, url: {action: "create"}, :html => {:multipart => true} do |f| %>
+
+
+  <div id="rootwizard">
+    <ul>
+      <li class="active"><a href="#tab1" data-toggle="tab">First</a></li>
+      <li><a href="#tab2" data-toggle="tab">Second</a></li>
+      <li><a href="#tab3" data-toggle="tab">Third</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab1">
+        <div class="control-group">
+          <div class="controls">
+           <%= f.label :name %>
+           <%= f.text_field :name %>
+         </div>
+       </div>
+       <div class="control-group">
+         <div class="controls">
+          <%= f.label :date_de_creation %>
+          <%= f.date_field :date_de_creation %>  
+        </div>         
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <%= f.label :genre %>
+          <%= f.text_field :genre %>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="tab2">
+      <div class="control-group">
+        <div class="controls">
+          <%= f.label :avatar do %>
+          <%= f.file_field :avatar %>
+          <%= f.hidden_field :avatar_cache %>
+          <% end %>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+         <%= f.label :description %>
+         <%= f.text_area :description, size: "60x12" %>
+       </div>
+     </div>
+   </div>
+   <div class="tab-pane" id="tab3">
+     <div class="control-group">
+       <div class="controls">
+        <h3>Membres: </h3>
+        <ul id="membres">
+          <%= f.fields_for :membres do |membres_form| %>
+          <li>
+            <%= membres_form.label :nom %>
+            <%= membres_form.text_field :nom %>
+
+            <%= membres_form.label :instrument %>
+            <%= membres_form.select(:instrument, options_for_select(Materiel.all.map(&:libelle)),prompt: true) %>
+
+            <%= membres_form.link_to_remove "Supprimer ce membre" %>
+
+          </li>
+          <% end %>
+          <p><%= f.link_to_add "Ajouter un membre", :membres, :data => { :target => "#membres" } %></p>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <ul class="pager wizard">
+    <li class="previous first" style="display:none;"><a href="#">First</a></li>
+    <li class="previous"><a href="#">Previous</a></li>
+    <li class="next last" style="display:none;"><a href="#">Last</a></li>
+    <li class="next"><a href="#">Next</a></li>
+  </ul>
+</div>  
+</div>
+<%end%>
+
+<script type="text/javascript">
+
+</script>
