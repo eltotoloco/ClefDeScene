@@ -74,9 +74,13 @@ for(var i=0; i<curInputs.length; i++){
   }
 }
 
-
-if (isValid)
+isValid = true;
+if (isValid){
+  $("#errors").html("");
   nextStepWizard.removeClass('disabled').trigger('click');
+}else{
+  $("#errors").html("Ces champs sont obligatoires");
+}
 });
 
 
@@ -93,7 +97,7 @@ $('div.setup-panel div a.btn-primary').trigger('click');
 
 })
 $( document ).ready(function() {
- 
+
 
 
 });
