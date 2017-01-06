@@ -55,7 +55,7 @@ end
 
 def new
   @annonce = type_class.new
-  @annonce.token = @annonce.generate_token
+  @annonce.token = Annonce.generate_token
   @annonce.membres.build
   Rails.logger.debug @annonce.avatar.thumb.size.inspect
   respond_to do |format|

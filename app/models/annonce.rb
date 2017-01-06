@@ -39,7 +39,7 @@ class Annonce < ApplicationRecord
 
 
   def self.generate_token
-    self.token = loop do
+    token = loop do
       random_token = SecureRandom.urlsafe_base64
       break random_token unless Annonce.where(token: random_token).exists?
     end
