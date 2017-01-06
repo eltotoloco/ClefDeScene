@@ -15,6 +15,6 @@ class Demande < ApplicationRecord
 	scope :statut, -> (statut) {where statut: statut}
 
 	def set_default_statut
-		self.statut ||= :confirmee
+		self.statut ||= :en_attente
 	end
 end

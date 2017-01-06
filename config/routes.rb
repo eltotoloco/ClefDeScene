@@ -14,8 +14,11 @@ Rails.application.routes.draw do
   
   resources :preview, only: [:show]
   resources :messages
-  resources :demandes
-  post '/demandes/test' => "demandes#test", as: :new_payment
+  resources :demandes, except: [:new]
+
+  post '/demandes/new' => "demandes#new", as: :new_payment
+  get '/accept' => "demandes#accept", as: :accept_demande
+  get '/refuse' => "demandes#refuse", as: :refuse_demande
 
 
   devise_for :users, controllers: {

@@ -26,6 +26,8 @@ gem 'bootstrap_form'
 
 gem "jquery-fileupload-rails"
 
+gem 'activemerchant'
+
 
 gem 'carrierwave', '~> 1.0'
 

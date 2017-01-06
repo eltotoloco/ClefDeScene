@@ -17,7 +17,7 @@ class Annonce < ApplicationRecord
     scope :by_name, -> (name) {where("name like ?", "%#{name}%")}
     scope :by_style, ->(style) {where("style = ?",style)}
     scope :by_id, ->(id) {find(id)}
-    scope :date, ->(date) {joins(:demandes).where('demandes.start_date <> ?', date)}
+    scope :date, ->(date) {left_outer_joins(:demandes).where('? NOT BETWEEN demandes.start_date and demandes.end_date', date)}
   #nested attr
 
   accepts_nested_attributes_for :membres, :allow_destroy => true, reject_if: ->(attributes){ attributes['nom'].blank? && attributes['instrument'].blank? }

@@ -7,6 +7,7 @@ class AnnoncesController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found        
 
   has_scope :available
+  has_scope :date
   has_scope :by_name,:using => :by_name, :type => :hash
   has_scope :by_id
   require 'benchmark'

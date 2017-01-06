@@ -15,7 +15,7 @@
 <div class="field">
     <%= f.label :start_date %>
     <div class="input-group date">
-    <%= f.text_field :start_date,hide_label: true, :class => "data-provide" %>
+   <%= demande.start_date %>
 
       <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
     </div>
@@ -32,8 +32,6 @@
 
   
   <%#= f.hidden_field :end_date, value: :start_date %>
-
-  <%= f.hidden_field :annonce_id, value: annonce_id %>
 
   
 

@@ -1,5 +1,5 @@
 class DemandesController < ApplicationController
-  before_action :set_demande, only: [:show, :edit, :update, :destroy]
+  before_action :set_demande, only: [:show, :edit, :update, :destroy, :accept]
   has_scope :by_annonce
   has_scope :from_user
   has_scope :to_user
@@ -18,7 +18,8 @@ class DemandesController < ApplicationController
 
   # GET /demandes/new
   def new
-    Rails.logger.debug params.inspect 
+    @demande = Demande.new(demande_params) 
+    Rails.logger.debug @demande.inspect 
   end
 
   # GET /demandes/1/edit
@@ -41,13 +42,13 @@ class DemandesController < ApplicationController
     @demande.to_user_id = Annonce.by_id(params[:demande][:annonce_id]).user_id
     Rails.logger.debug demande_params.inspect
     Rails.logger.debug params.inspect 
-      if @demande.save
-        @message = Message.new
-        @message.from = current_user.id
-        @message.to =  Annonce.by_id(@demande.annonce_id).user_id
-        @message.demande_id = @demande.id
-        @message.content = "Test"
-        @message.save
+    if @demande.save
+      @message = Message.new
+      @message.from = current_user.id
+      @message.to =  @demande.to_user_id
+      @message.demande_id = @demande.id
+      @message.content = "Test"
+      @message.save
       #  Rails.logger.debug User.by_id(Annonce.by_id(@demande.annonce_id).user_id)
 
       if @message.save
@@ -61,20 +62,35 @@ class DemandesController < ApplicationController
       format.json { render json: @demande.errors, status: :unprocessable_entity }
       Rails.logger.debug @demande.errors.full_messages
     end
-end
-
-def inbox 
-  if params[:type] == "From"
-    @demandes = Demande.from_user(current_user.id)
-  else
-    @demandes = Demande.to_user(current_user.id)
   end
 
-   respond_to do |format|
+  def inbox 
+    if params[:type] == "From"
+      @demandes = Demande.from_user(current_user.id)
+    else
+      @demandes = Demande.to_user(current_user.id)
+    end
+
+    respond_to do |format|
       format.js
     end
 
-end
+  end
+
+  def accept
+    Rails.logger.debug params.inspect
+    Rails.logger.debug  Demande.statuts.inspect
+
+     respond_to do |format|
+      if @demande.update(statut: Demande.statuts[params[:statut]])
+        format.html { redirect_to @demande, notice: 'Demande was successfully updated.' }
+        format.json { render :show, status: :ok, location: @demande }
+      else
+        format.html { render :edit }
+        format.json { render json: @demande.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   # PATCH/PUT /demandes/1
   # PATCH/PUT /demandes/1.json

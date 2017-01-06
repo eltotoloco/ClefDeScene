@@ -34,6 +34,7 @@
 				<li class="hidden-sm hidden-xs"> 
 					<%= form_tag annonces_path, :method => 'get', class: 'navbar-form navbar-right'  do %>
 					<%= text_field_tag :by_name, params[:by_name], class: 'form-control', placeholder: 'Search for...' %>
+					<%= date_field_tag :date, params[:date], class: 'form-control' %>
 					<%= submit_tag "Go!", class: "btn btn-default" %>
 					<% end %>
 				</li>

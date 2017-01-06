@@ -1,4 +1,4 @@
-  <%= bootstrap_form_for( demande) do |f| %>
+  <%= bootstrap_form_for( demande, url: new_payment_path) do |f| %>
   <% if demande.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(@demande.errors.count, "error") %> prohibited this demande from being saved:</h2>
@@ -34,7 +34,7 @@
   });
 
    $('.input-daterange #start').datepicker().on("show",function(e) {
-     alert("test");
+    
    }).on("input change", function (e) {
     startDate = e.target.value;
     $('.input-daterange #end').datepicker('setStartDate', startDate);
