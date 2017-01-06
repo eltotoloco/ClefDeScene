@@ -13,6 +13,10 @@ class AnnoncesController < ApplicationController
 
   def index 
     @annonces = type_class.all
+    filtering_params(params).each do |key, value|
+      @annonces = @annonces.public_send(key, value) if value.present?
+
+    end
     respond_to do |format|
       format.html
       format.js
@@ -21,7 +25,9 @@ class AnnoncesController < ApplicationController
 
   def catalogue
     @annonces = type_class.all
-
+    filtering_params(params).each do |key, value|
+      @annonces = @annonces.public_send(key, value) if value.present?
+    end
     respond_to do |format|
       format.js
     end
@@ -140,5 +146,10 @@ def new
     redirect_to :action => 'index'
   end
 
+    # A list of the param names that can be used for filtering the Product list
+    def filtering_params(params)
+      params.slice(:by_name, :by_id, :date)
+    end
 
-end
+
+  end

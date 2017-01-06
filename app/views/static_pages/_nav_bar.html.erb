@@ -45,7 +45,7 @@
 					<%= link_to "Artists", my_annonces_path%></li>
 					<% else %>
 					<%= link_to "Montez sur scène", new_annonce_path%></li>
-					<% end %>
+					<% end %> 	
 					<li><a href="/dashboard/profil"><%= current_user.email %> </a></li>
 					<li><%= link_to "Déconnexion", destroy_user_session_path, :method => :delete %>
 						<% else %>

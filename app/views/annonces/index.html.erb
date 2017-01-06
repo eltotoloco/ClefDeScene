@@ -7,7 +7,7 @@
 		<li id='toutes' role="presentation"> 
 			<% end %>
 
-			<%= link_to "Toutes", {:controller => "annonces", :action => "catalogue", :type => "Annonce"} , :remote => true %>
+			<%= link_to "Toutes", {:controller => "annonces", :action => "catalogue", :type => "Annonce", :params => params} , :remote => true %>
 		</li>
 		
 		<% Annonce.types.each do |type| %>
@@ -17,7 +17,7 @@
 			<li id='<%= type %>' role="presentation" >
 				<% end %>
 				<% libelle = "annonces.types.#{type}s".downcase %>
-				<%= link_to I18n.t(libelle), {:controller => "annonces", :action => "catalogue", :type => "#{type}"} , :remote => true %>
+				<%= link_to I18n.t(libelle), {:controller => "annonces", :action => "catalogue", :type => "#{type}",:params => params} , :remote => true %>
 			</li>
 			<% end %>
 		</ul>
