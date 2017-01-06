@@ -74,7 +74,7 @@ for(var i=0; i<curInputs.length; i++){
   }
 }
 
-isValid = true;
+
 if (isValid){
   $("#errors").html("");
   nextStepWizard.removeClass('disabled').trigger('click');
