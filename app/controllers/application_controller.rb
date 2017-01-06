@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 		if(current_user.sign_in_count ==1)
 			welcome_path
 		else
-			my_profile_path
+			annonces_path
 		end
 	end
 end

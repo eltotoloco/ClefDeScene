@@ -1,2 +1,8 @@
+$('.nav.catalogue li').click(function(){
+		console.log("bouyaaah");
+		$('.nav.catalogue li').removeClass('active');
+		$(this).addClass('active');
+	});
 $("#content").html("<%= escape_javascript(render 'index')  %>");
+
 console.log("bleh");

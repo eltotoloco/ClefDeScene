@@ -1,0 +1,289 @@
+<div class="row">
+  <div class="container col-md-12">
+    <div class="row">
+      <div class="stepwizard">
+        <div class="stepwizard-row setup-panel">
+          <div class="stepwizard-step">
+            <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+            <p>Step 1</p>
+          </div>
+          <div class="stepwizard-step">
+            <a href="#step-2" type="button" class="btn btn-default btn-circle disabled" >2</a>
+            <p>Step 2</p>
+          </div>
+          <div class="stepwizard-step">
+            <a href="#step-3" type="button" class="btn btn-default btn-circle disabled">3</a>
+            <p>Step 3</p>
+          </div>
+          <div class="stepwizard-step">
+            <a href="#step-4" type="button" class="btn btn-default btn-circle disabled">4</a>
+            <p>Step 4</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%= simple_nested_form_for @annonce, :defaults => { :wrapper_html => {:class => 'form-group'}, :input_html => { :class => 'form-control' } }, :html => { :multipart => true,  :id => "fileupload", :class => 'horizontal-form', :role => "form" } do |f| %>  
+    <% if annonce.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(annonce.errors.count, "error") %> prohibited this annonce from being saved:</h2>
+
+      <ul>
+        <% annonce.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+    <div class="row setup-content" id="step-1">
+      <div class="col-xs-12">
+        <div class="col-md-6">
+          <h3> Step 1</h3>
+          <div class="form-group">
+            <%= f.label :name %>
+            <%= f.text_field :name, hide_label: true, class: "form-control",required: "required" %>
+          </div>
+          <div class="form-group">
+            <% if annonce.avatar.url.present? %>
+            <%= image_tag(annonce.avatar.url.to_s) %>
+            <%= f.label :remove_avatar do %>
+            <%= f.check_box :remove_avatar %>
+            <% end %>
+            <% end %>
+            <%= f.file_field :avatar %>
+            <%= f.hidden_field :avatar_cache %>
+          </div>
+          <div class="form-group">
+            <%= f.label :experience %>
+            <%= f.date_field :experience,hide_label: true %>
+          </div>
+
+          <% if @type == "Annonce" %>
+          <div class="form-group">
+            <%= f.label :type %><br>
+            <%= f.select :type, Annonce.types.map {|r| [r.humanize, r.camelcase]}, {}, disabled: @type != "Annonce" %> 
+          </div>
+          <% else %>
+          <%= f.hidden_field :type, value: @type %>
+          <% end %>
+
+          <% if @type == "Group" %>
+          <div class="form-group">
+            <%= f.label :style %>
+            <%= f.text_field :style, hide_label: true %>
+          </div>
+          <% end %>
+          <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+        </div>
+      </div>
+    </div>
+    <div class="row setup-content" id="step-2">
+      <div class="col-xs-12">
+        <div class="col-md-6">
+          <h3> Step 2</h3>
+          <div class="form-group">
+            <%= f.label :description %>
+            <%= f.text_area :description,hide_label: true, size: "60x12" %>
+          </div>
+          <div class="form-group">
+
+            <h3>Membres: </h3>
+            <ul id="membres">
+              <%= f.fields_for :membres do |membres_form| %>
+              <li>
+                <%= membres_form.label :nom %>
+                <%= membres_form.text_field :nom,hide_label: true%>
+
+                <%= membres_form.label :instrument %>
+                <%= membres_form.text_field :instrument,hide_label: true %>
+                <%= membres_form.link_to_remove I18n.t('button.destroy'), :class =>"btn btn-danger" %>
+              </li>
+              <% end %>
+            </ul>
+            <p><%= f.link_to_add I18n.t('button.add'), :membres, :data => { :target => "#membres" }, validate: false %></p>
+
+          </div>
+          <button class="btn btn-primary backBtn btn-lg pull-left" type="button" >Back</button>
+
+          <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+        </div>
+      </div>
+    </div>
+    <div class="row setup-content" id="step-3">
+      <div class="col-xs-12">
+        <div class="col-md-8">
+          <h3> Step 3</h3>
+
+          <div class="form-group">
+
+            <h3>Liens: </h3>
+            <ul id="links">
+              <%= f.fields_for :links do |links_form| %>
+              <li>
+               <%= links_form.text_field :url %>
+               <%= links_form.label :site %><br>
+               <%= links_form.select :site, Link.sites.map {|r| [r.humanize, r.camelcase]}, {}%> 
+               <%= links_form.link_to_remove I18n.t('button.destroy'), :class =>"btn btn-danger" %>
+             </li>
+             <% end %>
+           </ul>
+           <p><%= f.link_to_add I18n.t('button.add'), :links, :data => { :target => "#links" } %></p>
+           <button class="btn btn-primary backBtn btn-lg pull-left" type="button" >Back</button>
+
+           <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+         </div>
+       </div>
+     </div>
+   </div>
+
+   <div class="row setup-content" id="step-4">
+    <div class="col-xs-12">
+      <div class="col-md-8">
+        <h3> Step 3</h3>
+          <% end %>
+
+        <div class="form-group">
+         <div class="row fileupload-buttonbar">
+          <div class="col-lg-7">
+          <%= simple_form_for @preview do |preview| %>
+            <span class="btn btn-success fileinput-button">
+              <i class="glyphicon glyphicon-plus"></i>
+              <span>Add files...</span>
+              <%= preview.file_field :file, :multiple => true %>      
+            </span>
+
+            <button type="submit" class="btn btn-primary start">
+              <i class="glyphicon glyphicon-upload"></i>
+              <span>Start Upload</span>
+            </button>
+
+            <button type="reset" class="btn btn-warning cancel">
+              <i class="glyphicon glyphicon-ban-circle"></i>
+              <span>Cancel Upload</span>
+            </button>
+
+            <button type="button" class="btn btn-danger delete">
+              <i class="glyphicon glyphicon-trash"></i>
+              <span>Delete Upload</span>
+            </button>
+
+            <%= preview.hidden_field :annonce_token, :value => @annonce.token %>
+            <% end %>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="progress progress-success progress-striped active fade">
+              <div class="bar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="row fileupload-loading"></div>
+
+          <div class="row">
+            <table class="table table-striped">
+              <tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery">
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <button class="btn btn-primary backBtn btn-lg pull-left" type="button" >Back</button>
+
+        <button class="btn btn-success btn-lg pull-right" type="submit">Finish!</button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+
+<script>
+  var fileUploadErrors = {
+    maxFileSize: 'File is too big',
+    minFileSize: 'File is too small',
+    acceptFileTypes: 'Filetype not allowed',
+    maxNumberOfFiles: 'Max number of files exceeded',
+    uploadedBytes: 'Uploaded bytes exceed file size',
+    emptyResult: 'Empty file upload result'
+  }; 
+</script>
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+  {% for (var i=0, file; file=o.files[i]; i++) { %}
+  <tr class="template-upload fade">
+    <td class="preview"><span class="fade"></span></td>
+    <td class="name"><span>{%=file.name%}</span></td>
+    <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+    {% if (file.error) { %}
+    <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+    {% } else if (o.files.valid && !i) { %}
+    <td>
+      <div class="progress progress-success progress-striped active"><div class="bar" style="width:0%;"></div></div>
+    </td>
+    <td class="start">{% if (!o.options.autoUpload) { %}
+      <button class="btn btn-primary">
+        <i class="icon-upload icon-white"></i>
+        <span>{%=locale.fileupload.start%}</span>
+      </button>
+      {% } %}</td>
+      {% } else { %}
+      <td colspan="2"></td>
+      {% } %}
+      <td class="cancel">{% if (!i) { %}
+        <button class="btn btn-warning">
+          <i class="icon-ban-circle icon-white"></i>
+          <span>{%=locale.fileupload.cancel%}</span>
+        </button>
+        {% } %}</td>
+      </tr>
+      {% } %}
+    </script>
+    <!-- The template to display files available for download -->
+    <script id="template-download" type="text/x-tmpl">
+      {% for (var i=0, file; file=o.files[i]; i++) { %}
+      <tr class="template-download fade">
+        {% if (file.error) { %}
+        <td></td>
+        <td class="name"><span>{%=file.name%}</span></td>
+        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {% } else { %}
+        <td class="preview">{% if (file.thumbnail_url) { %}
+          <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
+          {% } %}</td>
+          <td class="name">
+            <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+          </td>
+          <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+          <td colspan="2"></td>
+          {% } %}
+          <td class="delete">
+          <p> etet </p>
+             {%= button_to I18n.t('button.destroy'), preview_path(file), data: { confirm: I18n.t('button.are_you_sure') }, method: :delete %}
+          </td>
+        </tr>
+        {% } %}
+      </script>
+
+      <script type="text/javascript" charset="utf-8">
+        $(function () {
+          var num_added = 0;
+          var added = 0;
+          var all_data = {};
+
+
+
+    // Initialize the jQuery File Upload widget:
+    $('#fileupload').fileupload({
+      sequentialUploads: true,
+    });
+
+  });
+</script>
+
+

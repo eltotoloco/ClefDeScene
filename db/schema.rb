@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161223153041) do
+ActiveRecord::Schema.define(version: 20170106130517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20161223153041) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "user_id"
+    t.string   "token"
     t.index ["user_id"], name: "index_annonces_on_user_id", using: :btree
   end
 
@@ -38,17 +39,18 @@ ActiveRecord::Schema.define(version: 20161223153041) do
   end
 
   create_table "demandes", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "from_user_id"
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "prix"
     t.integer  "statut"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.text     "description"
     t.integer  "annonce_id"
+    t.integer  "to_user_id"
     t.index ["annonce_id"], name: "index_demandes_on_annonce_id", using: :btree
-    t.index ["user_id"], name: "index_demandes_on_user_id", using: :btree
+    t.index ["from_user_id"], name: "index_demandes_on_from_user_id", using: :btree
   end
 
   create_table "establishments", force: :cascade do |t|
@@ -89,6 +91,23 @@ ActiveRecord::Schema.define(version: 20161223153041) do
     t.index ["user_id"], name: "index_histo_demandes_on_user_id", using: :btree
   end
 
+  create_table "links", force: :cascade do |t|
+    t.string   "url"
+    t.integer  "site"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "annonce_id"
+    t.index ["annonce_id"], name: "index_links_on_annonce_id", using: :btree
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string   "address"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "materiels", force: :cascade do |t|
     t.string "libelle"
   end
@@ -102,12 +121,23 @@ ActiveRecord::Schema.define(version: 20161223153041) do
     t.index ["annonce_id"], name: "index_membres_on_annonce_id", using: :btree
   end
 
-  create_table "previews", force: :cascade do |t|
-    t.integer  "type"
-    t.string   "file"
-    t.integer  "annonce_id"
+  create_table "messages", force: :cascade do |t|
+    t.integer  "from"
+    t.integer  "to"
+    t.text     "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "demande_id"
+    t.index ["demande_id"], name: "index_messages_on_demande_id", using: :btree
+  end
+
+  create_table "previews", force: :cascade do |t|
+    t.string   "type",          null: false
+    t.string   "file"
+    t.integer  "annonce_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "annonce_token"
     t.index ["annonce_id"], name: "index_previews_on_annonce_id", using: :btree
   end
 
@@ -128,7 +158,6 @@ ActiveRecord::Schema.define(version: 20161223153041) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.string   "nom"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
@@ -145,13 +174,15 @@ ActiveRecord::Schema.define(version: 20161223153041) do
   add_foreign_key "annonces", "users"
   add_foreign_key "availabilities", "annonces"
   add_foreign_key "demandes", "annonces"
-  add_foreign_key "demandes", "users"
+  add_foreign_key "demandes", "users", column: "from_user_id"
   add_foreign_key "establishments", "users"
   add_foreign_key "groupes", "users"
   add_foreign_key "histo_demandes", "demandes"
   add_foreign_key "histo_demandes", "groupes"
   add_foreign_key "histo_demandes", "users"
+  add_foreign_key "links", "annonces"
   add_foreign_key "membres", "annonces"
+  add_foreign_key "messages", "demandes"
   add_foreign_key "previews", "annonces"
   add_foreign_key "utilises", "annonces"
   add_foreign_key "utilises", "materiels"

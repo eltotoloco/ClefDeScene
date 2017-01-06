@@ -1,0 +1,5 @@
+<p id="notice"><%= notice %></p>
+<%= image_tag @preview.file.url if @preview.file.url.present? %>
+
+<%= link_to 'Edit', edit_preview_path(@preview) %> |
+<%= link_to 'Back', previews_path %>

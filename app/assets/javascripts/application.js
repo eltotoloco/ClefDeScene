@@ -12,10 +12,12 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery_nested_form
 //= require turbolinks
+//= require jquery_nested_form
+
 //= require bootstrap-sprockets
 //= require formToWizard
+//= require nav_bar
 //= require rails.validations
 //= require rails.validations.nested_form
 //= require daterangepicker

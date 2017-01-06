@@ -1,4 +1,4 @@
-<%= nested_form_for annonce, validate: true do |f| %>
+<%= nested_form_for annonce  do |f| %>
 <% if annonce.errors.any? %>
 <div id="error_explanation">
   <h2><%= pluralize(annonce.errors.count, "error") %> prohibited this annonce from being saved:</h2>
@@ -17,6 +17,9 @@
     <%= f.label :name %>
     <%= f.text_field :name, hide_label: true, class: "form-control" %>
   </div>
+
+    <%= f.hidden_field :token, value: @annonce.token %>
+
   <div class="field">
     <% if annonce.avatar.url.present? %>
     <%= image_tag(annonce.avatar.url.to_s) %>
@@ -59,14 +62,14 @@
     <%= f.fields_for :membres do |membres_form| %>
     <li>
       <%= membres_form.label :nom %>
-      <%= membres_form.text_field :nom,hide_label: true, validate: true%>
+      <%= membres_form.text_field :nom,hide_label: true%>
 
       <%= membres_form.label :instrument %>
-      <%= membres_form.text_field :instrument,hide_label: true, validate: true %>
-      <%= membres_form.link_to_remove I18n.t('button.destroy'), validate: false, :class =>"btn btn-danger" %>
+      <%= membres_form.text_field :instrument,hide_label: true %>
+      <%= membres_form.link_to_remove I18n.t('button.destroy'),:class =>"btn btn-danger" %>
     </li>
     <% end %>
-    <p><%= f.link_to_add I18n.t('button.add'), :membres, :data => { :target => "#membres" }, validate: false %></p>
+    <p><%= f.link_to_add I18n.t('button.add'), :membres, :data => { :target => "#membres" }  %></p>
   </ul>
 </fieldset>
 <div class="actions">
@@ -75,10 +78,11 @@
 <% end %>
 </div>
 
+
+
 <script type="text/javascript">
   $( document ).ready(function() {
     console.log( "ready!" );
-    $("#new_group").formToWizard();
 
     $("#step0Next").bind("click", function(e) {
       //If the form is valid then go to next else don't

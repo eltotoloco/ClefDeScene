@@ -1,34 +1,72 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>User:</strong>
-  <%= @user.email %>
-</p>
 
-<p>
-  <strong>Groupe:</strong>
-  <%= @groupe.name %>
-</p>
+<div class="panel panel-default col-lg-3 col-md-2 col-sm-4">
+  <div class="panel-body">
+    <%= image_tag @demande.annonce.avatar.url(:thumb) if @demande.annonce.avatar.url.present? %>
 
-<p>
-  <strong>Start date:</strong>
-  <%= @demande.start_date %>
-</p>
+    <p>
+      <strong>Groupe:</strong>
+      <%= @demande.annonce.name %>
+    </p>
 
-<p>
-  <strong>End date:</strong>
-  <%= @demande.end_date %>
-</p>
+    <p>
+      <strong>Date de création :</strong>
+      <%= @demande.annonce.experience %>
+    </p>
 
-<p>
-  <strong>Prix:</strong>
-  <%= @demande.prix %>
-</p>
+  </div>
+</div>
 
-<p>
-  <strong>Statut:</strong>
-  <%= @demande.statut %>
-</p>
+<div class="panel panel-default col-md-8">
+  <div class="panel-body">
+    <p>
+      <strong>Groupe:</strong>
+      <%= @demande.annonce.name %>
+    </p>
+
+    <p>
+      <strong>Start date:</strong>
+      <%= @demande.start_date %>
+    </p>
+
+    <p>
+      <strong>End date:</strong>
+      <%= @demande.end_date %>
+    </p>
+
+    <p>
+      <strong>Prix:</strong>
+      <%= @demande.prix %>
+    </p>
+
+    <p>
+      <strong>Statut:</strong>
+      <%= @demande.statut %>
+    </p>
+
+  </div>
+</div>
+
+<div class="panel panel-default col-md-10 ">
+  <div class="panel-body">
+    <% @demande.messages.each do |message| %>
+
+    <div class="row">
+      <div class="panel panel-default col-md-10 ">
+        <div class="panel-body">
+          De : <%= User.by_id(message.from).email %>
+          <%= message.content %>
+          <%= message.created_at %>
+        </div>
+      </div>
+
+    </div>
+    <% end %>
+  </div>
+</div>
+
+<%= render partial: 'messages/form' , locals: {message: Message.new} %>
 
 <%= link_to 'Edit', edit_demande_path(@demande) %> |
 <%= link_to 'Back', demandes_path %>

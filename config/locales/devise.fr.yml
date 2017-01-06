@@ -44,7 +44,12 @@ fr:
       updated: "Votre compte a été modifié avec succès."
     sessions:
       signed_in: "Connecté."
+      sign_in: "Connexion"
+      sign_out: "Deconnexion"
       signed_out: "Déconnecté."
+      forgot_password: "Mot de passe oublié"
+      confirmation_not_received: "Vous n'avez pas reçu le mail de confirmation ?"
+      sign_up: "Inscription"
       already_signed_out: "Déconnecté."
     unlocks:
       send_instructions: "Vous allez recevoir les instructions nécessaires au déverrouillage de votre compte dans quelques instants"

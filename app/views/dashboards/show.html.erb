@@ -1,0 +1,31 @@
+<div class="row">
+	<%= render partial: 'static_pages/dashboard_nav_bar' %>
+	<div class="col-md-8">
+		<% @annonces.each do |annonce| %>
+		<div class="panel panel-default col-md-10 ">
+			<div class="panel-body">	
+				<p> <%= annonce.name %> </p>
+				<% annonce.demandes.each do |demande| %>
+				<%= link_to demande do %>
+				<div class="panel panel-default col-md-10 ">
+					<div class="panel-body">
+						<div class="row">
+							De : <%= demande.user.nom %>
+							<%= demande.start_date %>
+							<%= demande.end_date %>
+							<%= demande.prix %>
+							<%= demande.statut %>
+						</div>
+						<div class="row">
+							<%= demande.messages.last.content if demande.messages.last.present?%>
+
+						</div>
+					</div>
+				</div>
+				<% end %>
+				<% end %>
+			</div>
+		</div>
+		<% end %> 
+	</div>
+</div>

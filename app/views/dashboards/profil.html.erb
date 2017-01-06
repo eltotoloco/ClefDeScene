@@ -1,0 +1,15 @@
+<div class="row">
+	<div class="col-md-3">
+		<ul class="nav nav-pills nav-stacked">
+			<li class="active"><a href="" > Mon Compte </a></li>
+			<li><a href="#">Menu 2</a></li>
+			<li><a href="#">Menu 3</a></li>
+		</ul>
+	</div>
+	<div class="col-md-8-offset-1">
+		<div id="content">
+			<h2>Ceci est le profile de <%= current_user.nom %></h2>
+			<%= render partial: 'users/registrations/edit', locals: {user: current_user }%>
+		</div>
+	</div>
+</div>

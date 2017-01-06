@@ -3,6 +3,7 @@ class StaticPagesController < ApplicationController
 	end
 
 	def help
+		@preview = Preview.new
 	end
 
 	def about
@@ -12,6 +13,7 @@ class StaticPagesController < ApplicationController
 	end
 
 	def welcome
+		@previews = Preview.all
 	end
 
 

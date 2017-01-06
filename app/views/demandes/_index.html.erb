@@ -1,0 +1,20 @@
+
+<% @demandes.each do |demande| %>
+<%= link_to demande do %>
+<div class="panel panel-default col-md-12  ">
+	<div class="panel-body">
+		<div class="row">
+			De : <%= demande.from_user.email %>
+			<%= demande.start_date %>
+			<%= demande.end_date %>
+			<%= demande.prix %>
+			<%= demande.statut %>
+		</div>
+		<div class="row">
+			<%= demande.messages.last.content if demande.messages.last.present?%>
+
+		</div>
+	</div>
+</div>
+<% end %>
+<% end %>

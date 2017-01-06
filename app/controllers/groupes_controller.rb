@@ -8,8 +8,7 @@ class GroupesController < ApplicationController
 
 	def new
 		@groupe = Groupe.new
-		@groupe.membres.build
-		@groupe.utilises.build
+		
 
 	end
 

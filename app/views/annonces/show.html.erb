@@ -4,43 +4,61 @@
 
 	<div class="row">
 
-		<div class="col-md-8 col-md-offset-1">
+		<div class=" col-lg-9 col-md-8 col-sm-6">
 
-			<p>
-				<strong>Groupe:</strong>
-				<%= @annonce.name %>
-			</p>
+			<div class="col-lg-3 col-md-2 col-sm-4">
+				
 
-			<p>
-				<strong>Date de création :</strong>
-				<%= @annonce.experience %>
-			</p>
+				<%=link_to @annonce.avatar.url , { 'data-toggle' => 'lightbox' } do %>
 
-			<%= image_tag @annonce.avatar.url if @annonce.avatar.url.present? %>
-
-
-			<p>
-				<strong>Genre:</strong>
-				<%= @annonce.style %>
-			</p>
-
-			<p>
-				<strong>Membre(s):</strong>
-				<% @annonce.membres.each do |membre| %>
-				<%= render :partial => "membres/show", :locals => {:membre => membre} %>
+				<%= image_tag @annonce.avatar.thumb.url if @annonce.avatar.thumb.url.present? %>
 				<% end %>
-			</p>
+				<p>
+					<strong>Groupe:</strong>
+					<%= @annonce.name %>
+				</p>
+
+				<p>
+					<strong>Date de création :</strong>
+					<%= @annonce.experience %>
+				</p>
+
+				
+			</div>
+			<div class="panel panel-default col-lg-9 col-md-10 col-sm-8">
+				<div class="panel-body">
+					<p>
+						<strong>Genre:</strong>
+						<%= @annonce.style %>
+					</p>
+
+					<p>
+						<strong>Membre(s):</strong>
+						<% @annonce.membres.each do |membre| %>
+						<%= render :partial => "membres/show", :locals => {:membre => membre} %>
+						<% end %>
+					</p>
 
 
-			<p>
-				<strong>Description:</strong>
-				<%= @annonce.description %>
-			</p>
+					<p>
+						<strong>Description:</strong>
+						<%= @annonce.description %>
+					</p>
+
+
+					<p>
+						<strong>Lien(s):</strong>
+						<% @annonce.links.each do |link| %>
+						<p> <%= Link.sites[link.site].humanize.camelcase %> </p> <a href="<%= link.url %>" > <%= link.url %> </a>
+						<% end %>
+					</p>
+				</div>
+			</div>
 		</div>
-		<div class="col-md-3">
+		<div class="col-lg-3 col-md-3 col-sm-2"">
 
 			<% if user_signed_in? && @annonce.user_id != current_user.id%>
-			<%= render :partial => "demandes/new", :locals => {:annonce => @annonce, :datesPrises => @datesPrises} %>
+			<%= render :partial => "resa", :locals => {:annonce => @annonce, :datesPrises => @datesPrises, :demande => Demande.new} %>
 			<% end %>
 		</div>
 
@@ -50,3 +68,13 @@
 
 </div>
 
+
+
+<div id="popup"></div>
+
+<script type="text/javascript">
+	$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+		event.preventDefault();
+		$(this).ekkoLightbox();
+	});
+</script>

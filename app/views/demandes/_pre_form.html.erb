@@ -1,0 +1,64 @@
+  <%= bootstrap_form_for(demande, :remote => true, validate: false) do |f| %>
+  <% if demande.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(demande.errors.count, "error") %> prohibited this demande from being saved:</h2>
+
+    <ul>
+      <% demande.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+
+  <div class="field">
+    <%= f.label :start_date %>
+    <div class="input-group date">
+      <%= f.text_field :start_date,hide_label: true, :class => "data-provide" %>
+
+      <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= f.label :end_date %>
+    <div class="input-group date">
+      <%= f.text_field :end_date,hide_label: true, :class => "data-provide" %>
+
+      <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+    </div>
+  </div>
+
+  
+
+  <script type="text/javascript">
+    $('.data-provide').datepicker({
+      format: 'dd/mm/yyyy',
+      language: 'fr',
+      autoclose: true,
+      beforeShowDay: function(date){
+       var dates = <%= raw @datesPrises %>;
+       console.log(dates);
+       var dateFormatted = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
+       "/" + ((date.getMonth()+1) < 10 ? "0" + (date.getMonth()+1) : (date.getMonth()+1)) 
+       + "/" + date.getFullYear();
+       return dates.indexOf(dateFormatted) == -1
+     }
+   });
+ </script>
+ <%#= f.hidden_field :end_date, value: :start_date %>
+
+ <%= f.hidden_field :annonce_id, value: annonce_id %>
+
+
+
+ <div class="field">
+  <%= f.label :prix %>
+  <%= f.number_field :prix,hide_label: true %>
+</div>
+
+<div class="actions">
+<%= link_to "Demande de réservation", {:controller => "demandes", :action => "edit", :demande demande} ,class: "btn btn-primary" %>
+</div>
+<% end %>

@@ -10,7 +10,6 @@ body {
 }
 .stepwizard {
     display: table;
-    width: 50%;
     position: relative;
 }
 .stepwizard-step button[disabled] {
@@ -40,4 +39,14 @@ body {
     font-size: 12px;
     line-height: 1.428571429;
     border-radius: 15px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
 }

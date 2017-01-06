@@ -1,18 +1,21 @@
-<p id="notice"><%= notice %></p>
-
-<% libelle = "annonces.types.#{@type}s".downcase %>
-<h1>Annonces  <%=  I18n.t(libelle).downcase %></h1>
-
-
+</br>
 <% @annonces.each_slice(3) do |annonces| %>
 <div class="row">
-  <% annonces.each do |annonce| %>
-  <div class="col-md-3 col-md-offset-1">
-    <h3><%= annonce.name%></h3>
-    <%= image_tag annonce.avatar_url(:thumb) if annonce.avatar.url.present? %>
-    <%= link_to  I18n.t('button.show'), annonce %>
-  </div>
-  <% end %>
+	<% annonces.each do |annonce| %>
+	<div class="panel panel-default col-md-2 col-md-offset-1 ">
+		<div class="panel-body">
+				<div class="row">
+				<h3><%= annonce.name%></h3>
+				</div>
+				<div class="row">
+				<%= image_tag annonce.avatar_url(:thumb) if annonce.avatar.url.present? %>
+				</div>
+				<div class="row">
+				<%= link_to  I18n.t('button.show'), annonce %>
+				</div>
+		</div>
+	</div>
+	<% end %>
 </div>
 <% end %>
 

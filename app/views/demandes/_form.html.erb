@@ -31,22 +31,6 @@
   </div>
 
   
-
-    <script type="text/javascript">
-    $('.data-provide').datepicker({
-      format: 'dd/mm/yyyy',
-      language: 'fr',
-      autoclose: true,
-      beforeShowDay: function(date){
-       var dates = <%= raw @datesPrises %>;
-       console.log(dates);
-        var dateFormatted = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
-        "/" + ((date.getMonth()+1) < 10 ? "0" + (date.getMonth()+1) : (date.getMonth()+1)) 
-        + "/" + date.getFullYear();
-        return dates.indexOf(dateFormatted) == -1
-      }
-    });
-  </script>
   <%#= f.hidden_field :end_date, value: :start_date %>
 
   <%= f.hidden_field :annonce_id, value: annonce_id %>

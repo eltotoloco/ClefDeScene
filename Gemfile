@@ -24,7 +24,10 @@ gem 'bootstrap-datepicker-rails'
 
 gem 'bootstrap_form'
 
-gem 'carrierwave', '>= 1.0.0.rc', '< 2.0'
+gem "jquery-fileupload-rails"
+
+
+gem 'carrierwave', '~> 1.0'
 
 gem 'figaro'
 
@@ -33,7 +36,7 @@ gem "fog-aws"
 
 gem 'has_scope'
 
-gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations', branch: 'rails5'
+#gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations', branch: 'rails5'
 
 gem 'wicked'
 

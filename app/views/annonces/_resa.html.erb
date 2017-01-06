@@ -1,0 +1,70 @@
+  <%= bootstrap_form_for( demande) do |f| %>
+  <% if demande.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@demande.errors.count, "error") %> prohibited this demande from being saved:</h2>
+
+    <ul>
+      <% demande.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+
+  
+
+  <div class="input-daterange input-group" id="datepicker">
+    <%= f.text_field :start_date,hide_label: true, :class => "input-sm form-control", :id =>"start"  %>
+
+    <span class="input-group-addon">to</span>
+    <%= f.text_field :end_date,hide_label: true, :class =>  "input-sm form-control", :id =>"end" %>
+  </div>
+
+  <script type="text/javascript">
+
+   var startDate ="";
+   var endDate="";
+
+   $('.input-daterange').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true,
+    language: 'fr',
+    datesDisabled: <%= raw @datesPrises %>
+  });
+
+   $('.input-daterange #start').datepicker().on("show",function(e) {
+     alert("test");
+   }).on("input change", function (e) {
+    startDate = e.target.value;
+    $('.input-daterange #end').datepicker('setStartDate', startDate);
+    $('.input-daterange #end').datepicker('update');
+    $('.input-daterange #end').datepicker('show');
+  });
+
+   $('.input-daterange #end').datepicker().on("input change", function (e) {
+    endDate = e.target.value;
+    <% %>
+  });
+
+
+</script>
+<%#= f.hidden_field :end_date, value: :start_date %>
+
+<%= f.hidden_field :annonce_id, value: annonce.id %>
+
+
+
+
+<div class="field">
+  <%= f.label :prix %>
+  <%= f.number_field :prix,hide_label: true %>
+</div>
+
+<div class="actions">
+  <%= f.submit "Envoyer demande de réservation", class: "btn btn-primary" %>
+</div>
+<% end %>
+
+
+

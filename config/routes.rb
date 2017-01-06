@@ -1,18 +1,23 @@
 Rails.application.routes.draw do
-  resources :demandes, only: [:new, :create, :update,:delete]
-  get '/annonces/new' => "static_pages#annonce", as: :new_annonce
 
+
+  root 'static_pages#home'
+  get '/home' => "static_pages#home"
+  get '/help' => "static_pages#help"
+  get '/additional' => "users#additional", as: :additional_infos
+  get '/welcome' => "static_pages#welcome", as: :welcome
+
+  get '/annonces/new' => "static_pages#annonce", as: :new_annonce
   resources :annonces, except: :new
   resources :groups, controller: 'annonces', type: 'Group' 
   resources :photographers, controller: 'annonces', type: 'Photographer' 
   
-  root 'static_pages#home'
-  get '/home' => "static_pages#home"
+  resources :preview, only: [:show]
+  resources :messages
+  resources :demandes
+  post '/demandes/test' => "demandes#test", as: :new_payment
 
-  get '/help' => "static_pages#help"
 
-  get '/about' => "static_pages#about", as: :additional_infos
-  get '/welcome' => "static_pages#welcome", as: :welcome
   devise_for :users, controllers: {
    sessions: 'users/sessions',
    registrations: 'users/registrations',
@@ -22,17 +27,23 @@ Rails.application.routes.draw do
     get 'signin', to: 'users/sessions#new', as: :new_user_session
     post 'signin', to: 'users/sessions#create', as: :user_session
     delete 'signout', to: 'users/sessions#destroy', as: :destroy_user_session
+    get 'dashboard/profil', to: 'users/registrations#edit', as: :my_profile
   end
-  get '/monProfile'  => "profiles#show", as: :my_profile
-  get '/monGroupe' => "groupes#edit", as: :my_groupe
+ # get '/monProfile'  => "profiles#show", as: :my_profile
+  #get '/monGroupe' => "groupes#edit", as: :my_groupe
 
-#  get "/demandesU" => 'demandes#from_category', as: 'demandesU'
+  resources :previews
 
-resources :groupes, only: [:new, :create, :show, :index] do
-  resources :steps, only: [:show, :update], controller: 'groupes/steps'
-end
+  resources :pictures,only: [:show] ,controller: 'previews', type: 'Picture' 
+  resources :audios, only: [:show],controller: 'previews', type: 'Audio' 
+
+  get '/dashboard' => "dashboards#show"
+  get '/mesannonces'  => "annonces#my_annonces", as: :my_annonces
+  get '/dashboard/info'  => "dashboards#annonces", as: :my_info
+
 
   get '/catalogue' => "annonces#catalogue", as: :catalogue
+  get '/inbox' => "demandes#inbox", as: :inbox
 
 
 

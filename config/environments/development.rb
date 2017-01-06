@@ -13,6 +13,7 @@ config.enable_processing = true
   # Show full error reports.
   config.consider_all_requests_local = true
 
+MiniMagick.logger.level = Logger::DEBUG
 
   # Enable/disable caching. By default caching is disabled.
   if Rails.root.join('tmp/caching-dev.txt').exist?

@@ -1,6 +1,11 @@
 <h1>Editing Annonce</h1>
 
-<%= render "form", annonce: @annonce %>
+<%= render "form_multi", annonce: @annonce %>
+
+
+  <h3>Supprimer l'annonce</h3>
+
+  <p>Unhappy? <%= button_to I18n.t('button.destroy'), annonce_path(@annonce), data: { confirm: I18n.t('button.are_you_sure') }, method: :delete %></p>
 
 <%= link_to 'Show', @annonce %> |
 <%= link_to I18n.t('button.back'), sti_annonce_path(@type, nil) %>

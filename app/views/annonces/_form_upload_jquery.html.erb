@@ -1,0 +1,185 @@
+<h2>New Project</h2>
+<br />
+
+<%= simple_nested_form_for @project, :defaults => { :wrapper_html => {:class => 'form-group'}, :input_html => { :class => 'form-control' } }, :html => { :multipart => true,  :id => "fileupload", :class => 'horizontal-form', :role => "form" } do |f| %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <%= f.input :name, :label => "Project Name / Description", :class => 'col-lg-12' %>
+    <%= f.hidden_field :token %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6">
+    <%= f.input :number_of_pages %>
+    <%= f.input :flat_page_size %>
+    <%= f.input :purchase_order_number %>
+  </div>
+
+  <div class="col-lg-6">
+    <%= f.input :number_of_copies %>
+    <%= f.input :trim_page_size, :label => 'Finished Size <em><small>(If Different from Flat Page Size)</small></em>' %>
+    <%= f.input :preferred_delivery_date, :as => :text %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6">
+    <%= f.input :delivery_method %>
+  </div>
+
+  <div class="col-lg-6">
+    <%= f.input :project_instructions %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6">
+    <select id="branches">
+      <option>Calgary Downtown</option>
+      <option>Calgary South</option>
+      <option>Edmonton</option>
+      <option>Kelowna</option>
+    </select>
+  </div>
+</div>
+<br />
+<div class="row fileupload-buttonbar">
+  <div class="col-lg-7">
+    <%= fields_for :attachments do |a| %>
+      <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Add files...</span>
+        <%= a.file_field :file, :name => 'project[attachments_attributes][0][file]', :multiple => true %>      
+      </span>
+
+      <button type="submit" class="btn btn-primary start">
+        <i class="glyphicon glyphicon-upload"></i>
+        <span>Start Upload</span>
+      </button>
+
+      <button type="reset" class="btn btn-warning cancel">
+        <i class="glyphicon glyphicon-ban-circle"></i>
+        <span>Cancel Upload</span>
+      </button>
+
+      <button type="button" class="btn btn-danger delete">
+        <i class="glyphicon glyphicon-trash"></i>
+        <span>Delete Upload</span>
+      </button>
+
+       <%= a.hidden_field :branch, :value => "Calgary Downtown" %>
+       <%= a.hidden_field :project_token, :value => @project.token %>
+      <% end %>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="progress progress-success progress-striped active fade">
+      <div class="bar" style="width:0%"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row fileupload-loading"></div>
+
+  <div class="row">
+    <table class="table table-striped">
+      <tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery">
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<script>
+  var fileUploadErrors = {
+    maxFileSize: 'File is too big',
+    minFileSize: 'File is too small',
+    acceptFileTypes: 'Filetype not allowed',
+    maxNumberOfFiles: 'Max number of files exceeded',
+    uploadedBytes: 'Uploaded bytes exceed file size',
+    emptyResult: 'Empty file upload result'
+  }; 
+</script>
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+  <tr class="template-upload fade">
+      <td class="preview"><span class="fade"></span></td>
+      <td class="name"><span>{%=file.name%}</span></td>
+      <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        {% if (file.error) { %}
+          <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {% } else if (o.files.valid && !i) { %}
+          <td>
+              <div class="progress progress-success progress-striped active"><div class="bar" style="width:0%;"></div></div>
+          </td>
+          <td class="start">{% if (!o.options.autoUpload) { %}
+              <button class="btn btn-primary">
+                  <i class="icon-upload icon-white"></i>
+                  <span>{%=locale.fileupload.start%}</span>
+              </button>
+          {% } %}</td>
+      {% } else { %}
+          <td colspan="2"></td>
+      {% } %}
+      <td class="cancel">{% if (!i) { %}
+          <button class="btn btn-warning">
+              <i class="icon-ban-circle icon-white"></i>
+              <span>{%=locale.fileupload.cancel%}</span>
+          </button>
+      {% } %}</td>
+  </tr>
+{% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+  {% for (var i=0, file; file=o.files[i]; i++) { %}
+  <tr class="template-download fade">
+    {% if (file.error) { %}
+      <td></td>
+      <td class="name"><span>{%=file.name%}</span></td>
+      <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+      <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+      {% } else { %}
+          <td class="preview">{% if (file.thumbnail_url) { %}
+              <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
+          {% } %}</td>
+          <td class="name">
+              <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+          </td>
+          <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+          <td colspan="2"></td>
+      {% } %}
+      <td class="delete">
+          <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+              <i class="icon-trash icon-white"></i>
+              <span>{%=locale.fileupload.destroy%}</span>
+          </button>
+          <input type="checkbox" name="delete" value="1">
+      </td>
+  </tr>
+{% } %}
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  $(function () {
+    var num_added = 0;
+    var added = 0;
+    var all_data = {};
+
+    $('#branches').change(function() {
+
+        var test = $("option:selected",this).text();
+        $('#project_attachments_attributes_0_branch').val(test);
+
+     });
+
+    // Initialize the jQuery File Upload widget:
+    $('#fileupload').fileupload({
+      sequentialUploads: true,
+    });
+
+   });
+ </script>

@@ -1,50 +1,80 @@
 class DemandesController < ApplicationController
   before_action :set_demande, only: [:show, :edit, :update, :destroy]
   has_scope :by_annonce
-  has_scope :by_user
+  has_scope :from_user
+  has_scope :to_user
   has_scope :statut
 
   # GET /demandes
   # GET /demandes.json
   def index
-    @demandes = Demande.all
+    @demandes = current_user.asked_demandes
   end
 
   # GET /demandes/1
   # GET /demandes/1.json
   def show
-   
   end
 
   # GET /demandes/new
   def new
-    @demande = Demande.new
-    Rails.logger.debug "bleh"
+    Rails.logger.debug params.inspect 
   end
 
   # GET /demandes/1/edit
   def edit
   end
 
+  def test
+    Rails.logger.debug params.inspect
+    @demande = Demande.new(demande_params) 
+    @annonce = Annonce.by_id(params[:demande][:annonce_id])
+  end
+
+
   # POST /demandes
   # POST /demandes.json
   def create
-    @demande = Demande.new(demande_params)
-    @demande.user_id = current_user.id
+    @demande = Demande.new(demande_params) 
+
+    @demande.from_user_id = current_user.id
+    @demande.to_user_id = Annonce.by_id(params[:demande][:annonce_id]).user_id
     Rails.logger.debug demande_params.inspect
     Rails.logger.debug params.inspect 
-    respond_to do |format|
       if @demande.save
-        UserMailer.welcome_email(User.by_id(Groupe.by_id(@demande.annonce_id).user_id)).deliver
-       format.js {}
-       redirect_to controller: 'annonces', action: 'show', id: @demande.annonce_id
+        @message = Message.new
+        @message.from = current_user.id
+        @message.to =  Annonce.by_id(@demande.annonce_id).user_id
+        @message.demande_id = @demande.id
+        @message.content = "Test"
+        @message.save
+      #  Rails.logger.debug User.by_id(Annonce.by_id(@demande.annonce_id).user_id)
+
+      if @message.save
+        redirect_to controller: 'annonces', action: 'show', id: @demande.annonce_id
       else
         format.html { render :new }
         format.json { render json: @demande.errors, status: :unprocessable_entity }
       end
+    else
+      format.html { render :new }
+      format.json { render json: @demande.errors, status: :unprocessable_entity }
       Rails.logger.debug @demande.errors.full_messages
     end
+end
+
+def inbox 
+  if params[:type] == "From"
+    @demandes = Demande.from_user(current_user.id)
+  else
+    @demandes = Demande.to_user(current_user.id)
   end
+
+   respond_to do |format|
+      format.js
+    end
+
+end
 
   # PATCH/PUT /demandes/1
   # PATCH/PUT /demandes/1.json
@@ -92,7 +122,7 @@ class DemandesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def demande_params
-      params.require(:demande).permit(:user_id, :annonce_id, :start_date, :end_date, :prix, :statut)
+      params.require(:demande).permit(:annonce_id, :start_date, :end_date, :prix, :statut)
     end
 
     def indexByUser(user_id)

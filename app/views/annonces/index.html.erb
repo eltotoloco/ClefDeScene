@@ -1,18 +1,29 @@
 <p id="notice"><%= notice %></p>
 
-<ul class="nav nav-pills">
-  <li id='toutes' role="presentation" > 
-    <%= link_to "Toutes", {:controller => "annonces", :action => "catalogue", :type => "Annonce"} , :remote => true %>
-  </li>
-  <% Annonce.types.each do |type| %>
-  <li id='<%= type %>' role="presentation" >
-    <% libelle = "annonces.types.#{type}s".downcase %>
-    <%= link_to I18n.t(libelle), {:controller => "annonces", :action => "catalogue", :type => "#{type}"} , :remote => true %>
-  </li>
-  <% end %>
-</ul>
-<div id="content">
+<ul class="nav catalogue nav-tabs nav-justified" >
+	<% if @type=='Annonce' %>	
+	<li id='toutes' role="presentation" class="active" > 
+		<% else %>
+		<li id='toutes' role="presentation"> 
+			<% end %>
 
-<%= render 'index' %>
+			<%= link_to "Toutes", {:controller => "annonces", :action => "catalogue", :type => "Annonce"} , :remote => true %>
+		</li>
+		
+		<% Annonce.types.each do |type| %>
+		<% if type == @type %>	
+		<li id='<%= type %>' role="presentation" class="active">
+			<% else %>
+			<li id='<%= type %>' role="presentation" >
+				<% end %>
+				<% libelle = "annonces.types.#{type}s".downcase %>
+				<%= link_to I18n.t(libelle), {:controller => "annonces", :action => "catalogue", :type => "#{type}"} , :remote => true %>
+			</li>
+			<% end %>
+		</ul>
+		<div id="content">
 
-</div>
+			<%= render 'index' %>
+
+
+		</div>

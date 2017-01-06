@@ -16,17 +16,14 @@
 </head>
 
 <body>
+	<div id="navbar"> 
+		<%= render partial: 'static_pages/nav_bar' %>
+	</div>
 	<div class="container">
-		<div id="navbar"> 
-			<%= render partial: 'static_pages/nav_bar' %>
-		</div>
-		<%= render partial: 'static_pages/search_bar' %>		
-
-
+		
 		<!-- the main section where all pages will be loaded using URL variables and PHP include() function -->
-		<div id="main">
-			<%= yield %>
-		</div>
+
+		<%= yield %>
 		<!-- close #container -->
 	</div>
 	

@@ -2,11 +2,14 @@ class AnnoncesController < ApplicationController
   before_action :authenticate_user! , only: [:new,:create, :edit, :update, :destroy]
   before_action :set_type
   before_action :set_annonce, only: [:show, :edit, :update, :destroy]
+  before_action :validates_creator , only: [:edit, :update, :destroy]
+
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found        
 
   has_scope :available
   has_scope :by_name,:using => :by_name, :type => :hash
   has_scope :by_id
+  require 'benchmark'
 
   def index 
     @annonces = type_class.all
@@ -25,10 +28,34 @@ class AnnoncesController < ApplicationController
   end
 
   def show
+    @demande = Demande.new
+    @datesPrises = []
+    Rails.logger.debug @annonce.previews.inspect
   end
 
-  def new
-    @annonce = type_class.new
+  def getBookedDates 
+   @annonce.demandes.confirmee.each do |demande| 
+    @start = demande.start_date.strftime("%d/%m/%Y")
+    @end = demande.end_date.strftime("%d/%m/%Y")
+    (@start.to_date..@end.to_date).each do |dates|
+     @datesPrises << dates.strftime("%d/%m/%Y")
+   end    
+ end   
+
+ respond_to do |format|
+  format.js
+end
+end
+
+def new
+  @annonce = type_class.new
+  @annonce.token = @annonce.generate_token
+  @annonce.membres.build
+  Rails.logger.debug @annonce.avatar.thumb.size.inspect
+  respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @annonce }
+    end
   end
 
   def edit
@@ -36,12 +63,22 @@ class AnnoncesController < ApplicationController
 
   def create
     @annonce = Annonce.new(annonce_params)
-    Rails.logger.debug annonce_params
+   # @previews = Preview.where(:annonce_token => @annonce.token)
+    #@annonce.previews << @previews
+    Rails.logger.debug annonce_params.inspect
+    Rails.logger.debug @annonce.inspect
+    Rails.logger.debug @annonce.errors.full_messages
+
     if @annonce.save
+      Rails.logger.debug @annonce.errors.full_messages
+      
       redirect_to @annonce, notice: "#{type} was successfully created."
     else
+      Rails.logger.debug @annonce.errors.full_messages
+
       render action: 'new'
     end
+
   end
 
   def update
@@ -58,6 +95,10 @@ class AnnoncesController < ApplicationController
     redirect_to annonces_url
   end
 
+  def my_annonces
+    @annonces = current_user.annonces
+  end
+
 
     # Code hidden for brivety
 
@@ -67,7 +108,17 @@ class AnnoncesController < ApplicationController
      @type = type 
    end
 
-   def type 
+   def validates_creator
+     if(@annonce.user_id == current_user.id)
+      Rails.logger.debug 'bleh'
+    else
+      Rails.logger.debug 'bluh'
+      redirect_to annonces_path, notice: "Vous n'avez pas publié cette annonce"
+      return false
+    end 
+  end
+
+  def type 
     Annonce.types.include?(params[:type]) ? params[:type] : "Annonce"
   end
 
@@ -81,7 +132,7 @@ class AnnoncesController < ApplicationController
   end
 
   def annonce_params
-    params.require(type.underscore.to_sym).permit(:type,:name, :experience, :style, :description, :avatar, :avatar_cache, membres_attributes: [:id, :nom, :instrument, :_destroy],utilises_attributes: [:materiel_id, :quantite, :_destroy])
+    params.require(type.underscore.to_sym).permit(:type,:name, :experience,:user_id, :style,:token, :description, :avatar, :avatar_cache, membres_attributes: [:id, :nom, :instrument, :_destroy],utilises_attributes: [:materiel_id, :quantite, :_destroy],previews_attributes: [:id, :type, :file, :_destroy],links_attributes: [:id, :url, :site, :_destroy])
   end
 
   def record_not_found
