@@ -1,0 +1,101 @@
+    <%= bootstrap_nested_form_for @annonce  do |f| %>
+
+    <div class="col-md-6 col-md-offset-3">
+      <h3 class="text-center"> L'essentiel </h3>
+      <div class="row panel panel-default">
+        <div class=" col-md-6">
+          <%= f.label :name %>
+          <%= f.text_field :name, hide_label: true, class: "form-control input-sm ",required: "required" %>
+        </div>
+      </div>
+      <div class="row panel panel-default"> 
+        <div class=" col-md-6">
+
+          <% if @annonce.avatar.thumb.url.present? %>
+          <%= image_tag(@annonce.avatar.thumb.url.to_s) %>
+          <%= f.label :remove_avatar do %>
+          <%= f.check_box :remove_avatar %>
+          <% end %>
+          <% end %>
+          <%= f.label :avatar%>
+
+
+          <%= f.file_field :avatar,hide_label: true, class: "form-control " %>
+          <%= f.hidden_field :avatar_cache %>
+        </div>
+      </div>
+      <div class="row panel panel-default">
+        <div class=" col-md-6">
+          <%= f.label :experience %>
+          <div class="input-daterange input-group" id="datepicker">
+            <%= f.text_field :experience,hide_label: true, :class => "input-sm form-control", :id =>"start",required: "required"  %>
+          </div>
+        </div>
+      </div>
+
+      <% if @type == "Annonce" %>
+      <div class="form-group">
+        <%= f.label :type %><br>
+        <%= f.select :type, Annonce.types.map {|r| [r.humanize, r.camelcase]}, {}, disabled: @type != "Annonce" %> 
+      </div>
+      <% else %>
+      <%= f.hidden_field :type, value: @type %>
+      <% end %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+
+      <% if @type == "Group" %>
+      <div class="row panel panel-default">
+        <div class=" col-md-6">
+          <%= f.label :style %>
+          <%= f.text_field :style, hide_label: true , class: "input-sm",required: "required"%>
+        </div>
+      </div>
+      <% end %>
+
+      <% if @type == "Group" %>
+      <div class="row panel panel-default">
+        <div class=" col-md-12">
+          <h5><b>Membres:</b> </h5>
+          <ul id="membres">
+            <%= f.fields_for :membres do |membres_form| %>
+            <li class="row panel-body">
+              <div class="col-md-5">
+                <%= membres_form.label :nom %>
+                <%= membres_form.text_field :nom,hide_label: true, class: "input-sm" %>
+              </div>
+              <div class="col-md-5">
+                <%= membres_form.label :instrument %>
+                <%= membres_form.text_field :instrument,hide_label: true,class: "input-sm" %>
+              </div>
+              <div class="col-md-2  vcenter">
+                <%= membres_form.link_to_remove  :class =>"btn btn-danger" do  %>
+                <span class="glyphicon glyphicon-remove"></span>
+                <% end %>
+              </div>
+            </li>
+            <% end %>
+          </ul>
+          <p><%= f.link_to_add I18n.t('button.add'), :membres, :data => { :target => "#membres" } %></p>
+        </div>
+      </div>
+      <% end %>
+      <div class="actions pull-right">
+        <%= f.submit "Continuer" %>
+      </div> 
+    </div>
+    <% end %>
+
+    
+<script type="text/javascript">
+
+
+
+ $('.input-daterange').datepicker({
+  format: 'dd/mm/yyyy',
+  autoclose: true,
+  language: 'fr',
+  startView: 1,
+  endDate: new Date(),
+});
+</script>
+

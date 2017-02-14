@@ -1,0 +1,454 @@
+
+<% content_for :head do %>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<% end %>
+<noscript>
+  <!-- Un lien vers un site externe -->
+  <h1>Veuillez activer javascript pour publier une annonce </h1></noscript>
+
+
+  <%= nested_form_for @annonce, :validate  => true do |f| %>
+  <% if @annonce.errors.any? %>
+  <div class="alert alert-danger alert-dismissable" role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4><%= pluralize(@annonce.errors.count, "error") %> prohibited this annonce from being saved:</h4>
+
+    <ul>
+      <% @annonce.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+  <%= f.hidden_field :type, class: "form-control" %>
+
+  <h2 class="text-center">Bootstrap form with validation</h2>
+
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title text-center">
+          <a>L'essentiel</a>
+        </h4>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse in">
+
+       <div class="panel-body"> 
+         <div class="row">
+           <div class="col-lg-3">
+             <div class="row">
+               <div class="col-md-12">
+                <% if annonce.avatar.url.present? %>
+                <%= image_tag(annonce.avatar.url.to_s,width:"220", height:"277") %>
+                <%= f.label :remove_avatar do %>
+                <%= f.check_box :remove_avatar %>
+                <% end %>
+                <% elsif %>
+                <img id="preview_avatar"width="220" height="277">
+                <% end %>
+              </div>
+              <div class="col-md-12">
+               <div class="form-group has-warning">
+                 <label class="control-label" for="file-input">Avatar</label>
+
+                 <%= f.file_field :avatar, required: true if !annonce.avatar.url.present?%>
+                 <%= f.file_field :avatar if annonce.avatar.url.present?%>
+                 <%= f.hidden_field :avatar_cache %>
+               </div>
+             </div>
+           </div>
+         </div>
+         <div class="col-lg-9">
+           <div class="row">
+             <div class="col-lg-3">
+               <div class="form-group  has-feedback">
+                 <label class="control-label" for="text-input">Nom de l'annonce</label>
+                 <%= f.text_field :name, class: "form-control", required: true%>
+                 <span class="form-control-feedback" aria-hidden="true"></span>
+               </div>
+             </div>
+           </div>
+           <div class="row">
+             <div class="col-lg-3">
+               <div class="form-group has-feedback">
+                 <label class="control-label" for="text-input">Date de création</label>
+                 <%= f.text_field :experience, class: "form-control",id: "date", required: true %>
+                 <!-- <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
+               </div>
+             </div>
+             <%if @type == 'Group'%> 
+             <div class="col-lg-5">
+               <div class="form-group">
+                 <label class="control-label">Temps moyen de performance (en min)</label>
+                 <%= f.number_field :avg_time, class: "form-control", required: true %>
+               </div>
+             </div>
+             <% end -%>
+             <div class="col-lg-3">
+               <div class="form-group">
+                 <label class="control-label" for="text-input">Niveau </label>
+                 <%= f.select :level,options_for_select(Annonce.levels.keys.to_a), {},{ class: "form-control" }%>
+               </div>
+             </div>
+           </div>
+           <%if @type == 'Group'%> 
+           <div class="row">
+             <%= f.hidden_field :style, value: "Rock" %>
+
+             <div class="col-lg-2">
+               <div class="form-group"><span><label class="control-label checkbox-inline"><input type="checkbox">Label</label></span>
+               </div>
+             </div>
+             <div class="col-lg-2">
+               <div class="form-group"><span><label class="control-label checkbox-inline"><input type="checkbox">Label</label></span>
+               </div>
+             </div>
+             <div class="col-lg-2">
+               <div class="form-group"><span><label class="control-label checkbox-inline"><input type="checkbox">Label</label></span>
+               </div>
+             </div>
+             <div class="col-lg-2">
+               <div class="form-group"><span><label class="control-label checkbox-inline"><input type="checkbox">Label</label></span>
+               </div>
+             </div>
+           </div>
+           <% end -%>
+           <div class="row">
+             <div class="col-md-12">
+               <div class="form-grouphas-feedback">
+                 <label class="control-label" for="textarea-input">Description </label>
+                 <%= f.text_area :description, class: "form-control", required: true %>
+                 <span class=" form-control-feedback" aria-hidden="true"></span>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+       <div class="row">
+         <button type="button" class="btn pull-right" id="step1"  data-toggle="collapse"  data-parent="#accordion" data-target="#collapse2">Suivant</button>
+       </div>
+     </div>
+   </div>
+ </div>
+ <div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title text-center">
+      <a>Montrez votre talent</a>
+    </h4>
+  </div>
+  <div id="collapse2" class="panel-collapse collapse">
+    <div class="panel-body">
+     <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <h4 > Liens :</h4>
+
+          <%= f.fields_for :links do |links_form| %>
+
+          <div id="links">
+            <div class="col-lg-3">
+              <div class="form-group has-feedback">
+                <label class="control-label" for="text-input">Facebook </label>
+                <%= links_form.url_field :url , class: "form-control"%>
+                <%= links_form.hidden_field :site, value: "Facebook" %>
+
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group has-feedback">
+                <label class="control-label" for="text-input">Youtube </label>
+                <%= links_form.url_field :url , class: "form-control"%>
+                <%= links_form.hidden_field :site, value: "Youtube" %>
+
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group has-feedback">
+                <label class="control-label" for="text-input">SoundCloud </label>
+                <%= links_form.url_field :url , class: "form-control"%>
+                <%= links_form.hidden_field :site, value: "SoundCloud" %>
+
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+          <% end -%>
+
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <h4 > Aperçu :</h4>
+            <div class="row">
+              <div id="previews">
+
+                <%= f.fields_for :previews do |previews_form| %>
+                <% Rails.logger.debug previews_form.object.inspect %>
+                <% if !previews_form.object.new_record? %>
+                <p> <%= previews_form.object.file.file.filename if previews_form.object.file.present? %></p>
+                <%= previews_form.link_to_remove  :class =>"btn btn-danger" do  %>
+                <span class="glyphicon glyphicon-remove"></span>
+                <% end %>
+                <% elsif %>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label class="control-label"></label>
+                    <% if previews_form.object.new_record? && !previews_form.object.nil? %>
+                    <label class="control-label"><%= previews_form.object.type%></label>
+                    <% end -%>
+                    <%= previews_form.file_field :file %>
+                    <%= previews_form.hidden_field :type, class: "preview-type" %>
+
+                  </div>
+                </div>
+                <% end -%>
+                <% end -%>
+              </div>
+            </div>
+            <div class="row"> 
+              <% if @type == 'Group'%> 
+              <p class="col-lg-4" >
+                <%= f.link_to_add I18n.t('button.add')+ " audio", :previews, :data => { :target => "#previews", :'predefined-preview-type' => 'Audio'} , class: " btn btn-success preview" %>
+              </p>
+              <% end -%>
+              <p class="col-lg-4"><%= f.link_to_add (I18n.t('button.add') + " photo") , :previews, :data => { :target => "#previews", :'predefined-preview-type' => 'Image'} , class: " btn btn-success preview"%></p>
+              <p class="col-lg-4"><%= f.link_to_add (I18n.t('button.add') + " video") , :previews, :data => { :target => "#previews", :'predefined-preview-type' => 'Video'} , class: " btn btn-success preview"%></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+     <button type="button" class="btn pull-right" id="step2"  data-toggle="collapse"  data-parent="#accordion" data-target="#collapse3">Suivant</button>
+     <button type="button" class="btn pull-right" id="step1"  data-toggle="collapse"  data-parent="#accordion" data-target="#collapse1">Précédent</button>
+   </div>
+ </div> <!-- end panel body -->
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title text-center">
+      <a> Préparez vous </a>
+    </h4>
+  </div>
+  <div id="collapse3" class="panel-collapse collapse">
+    <div class="panel-body">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label class="control-label">Prix de par performance</label>
+                <%= f.number_field :price, class: "form-control", required: true %>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label class="control-label">Nombre de jours minimum avant une réservation</label>
+                <%= f.number_field :min_days_for_booking, class: "form-control", required: true %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <h4 > Disponibilités :</h4>
+            <p class="groupe_dispo"></p>
+            <div class="col-lg-4">
+              <div id="dispo1"></div>
+            </div>
+            <div class="col-lg-4">
+              <div id="dispo2"></div>
+            </div>
+            <div class="col-lg-4">
+              <div id="dispo3"></div>
+            </div>
+          </div>
+          <div class="row">
+            <p id="list_dispo"></p>
+
+          </div>
+        </div>
+      </div>
+      <div class="form-group has-warning pull-right">
+        <button class="btn btn-primary" type="submit">Button</button>
+      </div>
+
+
+      <button type="button" class="btn pull-right" id="step3"  data-toggle="collapse"  data-parent="#accordion" data-target="#collapse2">Précédent</button>
+      <div class="form-group has-warning pull-right">
+        <button class="btn btn-primary" type="button" onclick="mergedates()">Merge</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<% end -%>
+
+
+
+
+
+
+<script type="text/javascript">
+  var form = $(".new_group");
+  $("#date").datepicker({
+   format: 'dd/mm/yyyy',
+   language: 'fr',
+   autoclose: true,
+   endDate:new Date(),
+ });
+  $('[id^=step]').on('click', function() {
+    $(".new_group").enableClientSideValidations();
+
+      var valid = true;
+    // this will cycle through all visible inputs and attempt to validate all of them.
+    // if validations fail 'valid' is set to false
+    $(this).closest(".panel-body").find(':input').each(function() {
+      console.log( this );
+      /*var settings = window.ClientSideValidations.forms[this.form.id]
+      if (!$(this).isValid(settings.validators)) {
+        valid = false
+      }  */
+
+
+      if($(this).prop('required')){
+        if(!$(this).val()){
+          if(!$(this).parent().hasClass("error")){
+            $(this).wrap("<div class='field_with_errors control-group error'></div>");
+          }
+          valid = false
+        }else{
+         if($(this).parent().hasClass("error")){
+          $(this).unwrap();
+        }
+      }
+    }
+  });
+    if(valid){
+      //code to go to next step
+    }
+    // if any of the inputs are invalid we want to disrupt the click event
+    return valid;
+  });
+  $(".new_group").on("nested:fieldAdded", function(event) {
+    debugger;
+    if( $( event.link).hasClass("preview")){            
+      var type_field;
+      var form_group;
+
+      var preview_type = $(event.link).data('predefined-preview-type')
+      type_field = event.field.find('.preview-type');
+      type_field.closest(".form-group").find("label").html(preview_type);
+      return type_field.val(preview_type);
+    }else{
+     var name_field;
+     name_field = event.field.find('.name');
+     return name_field.val($(event.link).data('predefined-name'));
+   }
+ });
+
+  //merge dates before submit
+  $(".new_group").submit(function( event ) {
+    var dispos = mergedates();
+    var inputStart,inputEnd;
+      $.each(dispos,function(index,value){
+      inputStart = $("<input type=hidden name=group[availabilities_attributes]["+index+"][start_date]>").val(value);
+      inputEnd = $("<input type=hidden name=group[availabilities_attributes]["+index+"][end_date]>").val(value);
+      $(".edit_group").append(inputStart).append(inputEnd);
+    });
+  });
+
+  $(".edit_group").submit(function( event ) {
+    var dispos = mergedates();
+    var inputStart,inputEnd;
+     $.each(dispos,function(index,value){
+      inputStart = $("<input type=hidden name=group[availabilities_attributes]["+index+"][start_date]>").val(value);
+      inputEnd = $("<input type=hidden name=group[availabilities_attributes]["+index+"][end_date]>").val(value);
+      $(".edit_group").append(inputStart).append(inputEnd);
+    });
+
+  });
+
+  $(".edit_group").on("nested:fieldAdded", function(event) {
+    debugger;
+    if( $( event.link).hasClass("preview")){            
+      var type_field;
+      var form_group;
+
+      var preview_type = $(event.link).data('predefined-preview-type')
+      type_field = event.field.find('.preview-type');
+      type_field.closest(".form-group").find("label").html(preview_type);
+      return type_field.val(preview_type);
+    }else{
+     var name_field;
+     name_field = event.field.find('.name');
+     return name_field.val($(event.link).data('predefined-name'));
+   }
+ });
+  function readURL(input) {
+
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $('#preview_avatar').attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  $("#group_avatar").change(function(){
+    readURL(this);
+  });
+  var dispos = [];
+  var today = new Date();
+  var month = today.getMonth();
+  console.log(month);
+  $('#dispo1').datepicker({
+    format: 'dd/mm/yyyy',
+    language: 'fr',
+    multidate:true,
+    startDate: today,
+    endDate: new Date(today.getFullYear(),month+1,0),
+  });
+  $('#dispo2').datepicker({
+    format: 'dd/mm/yyyy',
+    language: 'fr',
+    multidate:true,
+    startDate: new Date(today.getFullYear(),month+1,1),
+    endDate:new Date(today.getFullYear(),month+2,0),
+  });
+
+  $('#dispo3').datepicker({
+    format: 'dd/mm/yyyy',
+    language: 'fr',
+    multidate:true,
+    startDate: new Date(today.getFullYear(),month+2,1),
+    endDate: new Date(today.getFullYear(),month+3,0)
+  });
+
+  function mergedates (){
+    dispos = [];
+    var date;
+    $('[id^=dispo]').each(function(){
+       $.each($( this ).datepicker("getDates"),function(index,value){
+        date = new Date(value);
+        console.log((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
+        dispos.push((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
+       });
+      //$.merge(dispos, dates)
+    });
+    console.log(dispos);
+    $("#new_group").find(".groupe_dispo").html(dispos);
+
+    return dispos;
+  };
+
+</script>
+
+

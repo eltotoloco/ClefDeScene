@@ -29,11 +29,8 @@ class PreviewsController < ApplicationController
 
   def create
     @preview = Preview.new(preview_params)
-    Rails.logger.debug @preview.inspect
-    @preview.file = params[:preview][:file].first
-    Rails.logger.debug params[:preview][:file].first.inspect
     if @preview.save
-      redirect_to @preview, notice: "#{type} was successfully created."
+    #  redirect_to @preview, notice: "#{type} was successfully created."
     else
       Rails.logger.debug @preview.errors.full_messages
     end
@@ -50,7 +47,6 @@ class PreviewsController < ApplicationController
 
   def destroy
     @preview.destroy
-    redirect_to previews_url
   end
 
 
@@ -76,7 +72,7 @@ class PreviewsController < ApplicationController
   end
 
   def preview_params
-    params.require(:preview).permit(:type,:file, :annonce_id, :annonce_token)
+    params.require(:preview).permit(:type,{file: []}, :annonce_id, :annonce_token)
 
   end
 

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-static-top">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -12,49 +12,29 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="/home">Home</a></li>
 
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Annonces <span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li id='toutes' role="presentation" > 
-							<%= link_to "Toutes", sti_annonce_path('Annonce' , nil) %>
-						</li>
-						<% Annonce.types.each do |type| %>
-						<li id='<%= type %>'>
-							<% libelle = "annonces.types.#{type}s".downcase %>
-							<a href="">
+				<li class="">
+					<%= link_to "Annonces", sti_annonce_path('Annonce' , nil) %>
 
-
-							</a>
-							<%= link_to I18n.t(libelle), sti_annonce_path(type, nil) %>
-
-						</li>
-						<% end %>
-					</ul>
 				</li>
-				<li class="hidden-sm hidden-xs"> 
-					<%= form_tag annonces_path, :method => 'get', class: 'navbar-form navbar-right'  do %>
-					<%= text_field_tag :by_name, params[:by_name], class: 'form-control', placeholder: 'Search for...' %>
-					<%= date_field_tag :date, params[:date], class: 'form-control' %>
-					<%= submit_tag "Go!", class: "btn btn-default" %>
-					<% end %>
-				</li>
+				
 			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li>
-					<% if user_signed_in? %>
+			<ul class="nav navbar-nav navbar-right">				
+				<% if user_signed_in? %>
 					<% if current_user.annonces.present? %>
-					<%= link_to "Artists", my_annonces_path%></li>
+					<li><%= link_to "Artists", my_annonces_path%></li>
 					<% else %>
-					<%= link_to "Montez sur scène", new_annonce_path%></li>
-					<% end %> 	
-					<li><a href="/dashboard/profil"><%= current_user.email %> </a></li>
-					<li><%= link_to "Déconnexion", destroy_user_session_path, :method => :delete %>
-						<% else %>
-						<%= link_to "Connexion", new_user_session_path %></li>
-						<li><%= link_to "Inscription", new_user_registration_path %>
-							<% end %> 
-						</li> 
-					</ul>
-				</div>
-			</div>
-		</nav>
+					<li><%= link_to "Montez sur scène", new_annonce_path %></li>
+					<% end %>
+
+					<li><%=link_to current_user.email, my_profil_path %></li>
+					<li><%= link_to "Déconnexion", destroy_user_session_path, :method => :delete %></li>
+				<% else %>
+					<li><%= link_to "Connexion", new_user_session_path %></li>
+					<li><%= link_to "Inscription", new_user_registration_path %></li>
+				<% end %> 
+			</ul>
+		</div>
+	</div>
+	
+
+</nav>

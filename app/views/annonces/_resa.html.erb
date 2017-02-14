@@ -1,4 +1,4 @@
-  <%= bootstrap_form_for( demande, url: new_payment_path) do |f| %>
+  <%= bootstrap_form_for( demande, url: new_booking_path) do |f| %>
   <% if demande.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(@demande.errors.count, "error") %> prohibited this demande from being saved:</h2>
@@ -30,6 +30,7 @@
     format: 'dd/mm/yyyy',
     autoclose: true,
     language: 'fr',
+    startDate: new Date(),
     datesDisabled: <%= raw @datesPrises %>
   });
 
@@ -53,15 +54,7 @@
 
 <%= f.hidden_field :annonce_id, value: annonce.id %>
 
-
-
-
-<div class="field">
-  <%= f.label :prix %>
-  <%= f.number_field :prix,hide_label: true %>
-</div>
-
-<div class="actions">
+<div class="actions text-center">
   <%= f.submit "Envoyer demande de réservation", class: "btn btn-primary" %>
 </div>
 <% end %>

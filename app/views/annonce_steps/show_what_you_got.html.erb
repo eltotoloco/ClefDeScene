@@ -1,0 +1,45 @@
+ <div class="col-md-12">
+     <%= bootstrap_nested_form_for @annonce, url: wizard_path  do |f| %>
+
+  <h3 class="text-center"> Montrer votre talent </h3>
+
+  <div class="row panel panel-default">
+    <div class="col-md-6">
+      <%= f.label :description %>
+      <%= f.text_area :description,hide_label: true%>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 panel panel-default ">
+      <h5><b>Liens :</b> </h5>
+      <ul id="links">
+        <%= f.fields_for :links do |links_form| %>
+        <li>
+          <div class="row panel-body">
+            <div class="col-md-5">
+
+             <%= links_form.text_field :url %>
+           </div>
+           <div class="col-md-5">
+
+             <%= links_form.select :site, Link.sites.map {|r| [r.humanize, r.camelcase]}, {}%> 
+           </div>
+           <div class="col-md-2  vcenter">
+            <%= links_form.link_to_remove  :class =>"btn btn-danger" do  %>
+            <span class="glyphicon glyphicon-remove"></span>
+            <% end %>
+          </div>
+        </div>
+
+      </li>
+      <% end %>
+    </ul>
+    <p><%= f.link_to_add I18n.t('button.add'), :links, :data => { :target => "#links" } %></p>
+
+  </div>
+</div>
+<button class="btn btn-primary nextBtn btn-lg pull-right" type="submit" >Next</button>
+
+<% end -%>
+
+</div>

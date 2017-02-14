@@ -1,0 +1,30 @@
+<% content_for :head do %>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<% end %>
+
+<div class="row">
+
+    <div class="col-md-12 col-md-offset-0">
+
+        <% @annonces.each do |annonce| %>
+        <div class="row">
+
+            <div class="col-md-12">
+                <%= render  annonce %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-sm-2 pull-right">
+
+                <%= link_to  I18n.t('button.show'), annonce,  class: "btn btn-default btn-lg " %>
+
+            </div>
+        </div>
+
+        <% end -%>
+
+    </div>
+</div>

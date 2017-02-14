@@ -24,4 +24,5 @@
 //= require bootstrap/modal
 //= require bootstrap-datepicker
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.fr.js
-//= require_tree .
+//= require_self
+//= require_tree

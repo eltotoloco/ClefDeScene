@@ -1,12 +1,8 @@
-<div class="row">
-	<%= form_tag annonces_path, :method => 'get', class: 'input-group'  do %>
-	
-	<div class="input-group">
-		<%= text_field_tag :by_name, params[:by_name], class: 'form-control', placeholder: 'Search for...' %>
-		<span class="input-group-btn">
-			<%= submit_tag "Go!", class: "btn btn-default" %>
-		</span>
-	</div>
+<%= form_tag sti_annonce_path(@type, nil), :method => 'get', class: 'navbar-form' , remote: true do %>
+<%= select_tag :by_type,options_for_select(Annonce.types,params[:by_type]),{class: 'form-control', :onchange=>"$(this.form).submit();"} if !@type.present?%>
+<%= select_tag :by_style,options_for_select(['Blues','Jazz','Rock'],params[:by_style]),{class: 'form-control', :onchange=>"$(this.form).submit();"} if @type == 'Group'%>
+<%= text_field_tag :by_name, params[:by_name], class: 'form-control', placeholder: 'Search for...'%>
+<%= date_field_tag :not_booked, params[:not_booked], class: 'form-control' %>
+<%= submit_tag "Rechercher", class: "btn btn-default", :onclick=>"$(this.form).submit();"%>
+<% end %>
 
-	<% end %>
-</div>

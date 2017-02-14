@@ -24,11 +24,11 @@ gem 'bootstrap-datepicker-rails'
 
 gem 'bootstrap_form'
 
-gem "jquery-fileupload-rails"
+#gem "jquery-fileupload-rails"
 
 gem 'activemerchant'
 
-
+gem 'stripe', git: 'https://github.com/stripe/stripe-ruby'
 gem 'carrierwave', '~> 1.0'
 
 gem 'figaro'

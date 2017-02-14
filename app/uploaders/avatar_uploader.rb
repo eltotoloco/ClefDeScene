@@ -19,21 +19,33 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
-  def extension_white_list
-    %w(jpg jpeg gif png)
+  def extension_whitelist
+      %w(jpg jpeg gif png)
+  
+
+
   end
 
   version :thumb do
-    process resize_to_fill: [150, 190]
+    process resize_to_fill: [220, 277]
   end
 
   version :small_thumb, :from_version => :thumb do
-    process resize_to_fill: [75, 95]
+    process resize_to_fill: [165, 208]
   end
 
 
 
-
+  protected
+  def image?(new_file)
+    new_file.content_type.include? 'image'
+  end
+  def audio?(new_file)
+    new_file.content_type.include? 'audio'
+  end
+  def video?(new_file)
+    new_file.content_type.include? 'video'
+  end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url

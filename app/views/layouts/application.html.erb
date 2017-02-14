@@ -4,10 +4,14 @@
 	<title>SecondApp</title>
 	<%= csrf_meta_tags %>
 
+	<%= yield :head %>
+
+
 	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 	<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 	<%= stylesheet_link_tag "multiplestepform" %>
 	<%= javascript_include_tag 'multiplestepform' %>
+	<%#= javascript_include_tag 'credit_card_form' %>
 	<%= stylesheet_link_tag "multiplestepform2" %>
 	<%= javascript_include_tag 'multiplestepform2' %>
 	<%= stylesheet_link_tag "calendar" %>
@@ -16,17 +20,16 @@
 </head>
 
 <body>
-	<div id="navbar"> 
-		<%= render partial: 'static_pages/nav_bar' %>
-	</div>
+	<%= render partial: 'static_pages/nav_bar' %>
+	<%= yield :navbar %>
 	<div class="container">
-		
+
 		<!-- the main section where all pages will be loaded using URL variables and PHP include() function -->
 
 		<%= yield %>
 		<!-- close #container -->
 	</div>
-	
-	
+
+
 </body>
 </html>

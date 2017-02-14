@@ -1,0 +1,50 @@
+	<p id="notice"><%= notice %></p>
+
+	<div class="row">
+		<%= render partial: 'static_pages/dashboard_nav_bar',:locals => { :active => 'Demandes' } %>
+	</div>
+	<div class="row">
+		<ul class="nav nav-pills nav-">
+			<li class="active"><%= link_to "Envoyées",demandes_sent_path %></li>
+			<li>	<%= link_to "Reçues",  demandes_received_path %> </li>
+		</ul>
+	</div>			
+	<div class="row">
+		
+
+		<div class="col-lg-12 annonce-list">
+
+			<% @demandes.each do |demande| %>
+			<%= link_to demande do %>
+
+			<div class="row annonce-item">
+				<div class="annonce-container">
+					<div class="col-lg-12">
+						<div class="row">
+							<div class="col-lg-2  ">
+
+								<img id="preview_avatar" width="83" height="104">
+								<% if demande.from_user == current_user%>
+								<%= demande.to_user.email %>
+								<% else %>
+								<%= demande.from_user.email %>
+								<% end %>
+							</div>
+							<div class="col-lg-10 col-md-8 col-sm-8">
+								<p class="annonce-name">	
+									
+									pour <%=demande.annonce.name%>
+									du <%= demande.start_date %> au <%= demande.end_date %> 
+								</p>
+								<p>	<%= demande.messages.last.content if demande.messages.last.present?%></p>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<% end -%>
+			<% end %>
+		</div>
+	</div>
+

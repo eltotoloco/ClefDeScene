@@ -1,0 +1,7 @@
+<h1>Editing Profil</h1>
+
+<%= render 'form', profil: @profil %>
+
+  <p>Unhappy? <%= button_to I18n.t('button.destroy'), profil_path(@profil), data: { confirm: I18n.t('button.are_you_sure') }, method: :delete %></p>
+<%= link_to 'Show', @profil %> |
+<%= link_to 'Back', profils_path %>

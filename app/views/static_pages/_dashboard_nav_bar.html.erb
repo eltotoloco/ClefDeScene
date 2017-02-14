@@ -1,6 +1,16 @@
-	<ul class="nav nav-pills col-md-12">
-	<li><%= link_to "Mon compte", my_profile_path, class: "active" %></li>
-	<li><%= link_to "Mes informations", my_info_path %></li>
-	<li><%= link_to "Mes annonces", my_annonces_path %></li>
-	<li><%= link_to "Mes demandes", demandes_path %></li>
-	</ul>
+
+<div class="navbar navebar-dashboard">
+	<div class="navbar-inner">
+		<ul class="nav nav-justified">
+			<li <% if active == 'Account' %> class="active"<% end %>><%= link_to "Mon compte", my_account_path %></li>
+			<li <% if active == 'Infos' %> class="active"<% end %>><%= link_to "Mes informations", my_profil_path %></li>
+			<li <% if active == 'Annonces' %> class="active"<% end %>><%= link_to "Mes annonces", my_annonces_path %></li>
+			<li <% if active == 'Demandes' %> class="active"<% end %>><%= link_to  demandes_sent_path  do %>
+				Mes demandes<span class="badge"><%= "12" if current_user.unReadMessages?%></span>
+				<% end -%>
+
+			</li>
+			
+		</ul>
+	</div>
+</div>

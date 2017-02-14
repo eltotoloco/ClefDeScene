@@ -1,15 +1,31 @@
+<h2>Ceci est le profile de <%= @user.nom %></h2>
+
+<%= link_to "Editer mon compte", edit_user_registration_path %>
+
+
 <div class="row">
 	<div class="col-md-3">
 		<ul class="nav nav-pills nav-stacked">
-			<li class="active"><a href="" > Mon Compte </a></li>
+			<li ><%= link_to "Mon groupe", my_groupe_path , :remote => true%></li>
+			<li class="active"><%= link_to "Mon compte", edit_user_registration_path, :remote => true %></li>
 			<li><a href="#">Menu 2</a></li>
 			<li><a href="#">Menu 3</a></li>
 		</ul>
 	</div>
 	<div class="col-md-8-offset-1">
 		<div id="content">
-			<h2>Ceci est le profile de <%= current_user.nom %></h2>
-			<%= render partial: 'users/registrations/edit', locals: {user: current_user }%>
+			
 		</div>
 	</div>
 </div>
+
+
+<h2> Votre Page </h2>
+<% if @groupe.present? %>
+<h2> Votre groupe <%= @groupe.name %> </h2>
+<%= link_to "Cliquer ici pour modifier votre groupe", my_groupe_path %>
+
+<% elsif @user.groupe? %>
+<h2>Vous n'avez pas encorer créer votre groupe</h2>
+<%= link_to "Cliquer ici pour créer votre groupe", new_groupe_path %>
+<% end %> 

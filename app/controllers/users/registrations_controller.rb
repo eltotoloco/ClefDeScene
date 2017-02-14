@@ -11,7 +11,7 @@ end
 
 def configure_permitted_parameters
   devise_parameter_sanitizer.permit(:sign_up) do |user_params|
-    user_params.permit(:nom,:email, :password, :password_confirmation, { roles:[] })
+    user_params.permit(:email, :password, :password_confirmation, { roles:[] })
   end
 end
  #  POST /resource
@@ -44,7 +44,6 @@ end
 
 #   GET /resource/edit
 def edit
-  Rails.logger.debug "dfdfd"
  super
 end
 

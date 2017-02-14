@@ -1,3 +1,11 @@
+<% content_for :head do %>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<% end %>
+
+
 <div class="row">
   <div class="stepwizard col-md-6 col-md-offset-3">
     <div class="stepwizard-row setup-panel ">
@@ -20,7 +28,7 @@
   <div class="col-md-6 col-md-offset-3">
     <div id="errors"></div>
     <%= bootstrap_nested_form_for annonce  do |f| %>
-    <% if annonce.errors.any? %>
+    <% if annonce.errors.any? && 0 %>
     <div id="error_explanation">
       <h2><%= pluralize(annonce.errors.count, "error") %> prohibited this annonce from being saved:</h2>
 
@@ -49,8 +57,7 @@
             <%= f.check_box :remove_avatar %>
             <% end %>
             <% end %>
-            <%= f.label :avatar%>
-            
+            <%= f.label :avatar%>          
 
             <%= f.file_field :avatar,hide_label: true, class: "form-control " %>
             <%= f.hidden_field :avatar_cache %>
@@ -84,7 +91,7 @@
         </div>
         <% end %>
 
-        <% if @type == "Group" %>
+        <% if @type == "Group" && !1 %>
         <div class="row panel panel-default">
           <div class=" col-md-12">
             <h5><b>Membres:</b> </h5>
@@ -108,10 +115,9 @@
               <% end %>
             </ul>
             <p><%= f.link_to_add I18n.t('button.add'), :membres, :data => { :target => "#membres" } %></p>
-
           </div>
-          <% end %>
         </div>
+        <% end %>
         <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
       </div>
     </div>
@@ -162,12 +168,19 @@
   <div class="row setup-content" id="step-3">
     <div class="col-md-12">
       <h3 class="text-center"> Préparez vous </h3>
-      
+       <div class="row panel panel-default">
+          <div class=" col-md-12">
+            <div " class="" id="dispo">
+        
+                </div>
+          </div>
+        </div>
       <button class="btn btn-primary backBtn btn-lg pull-left" type="button" >Back</button>
       <button class="btn btn-success btn-lg pull-right" type="submit">Finish!</button>
     </div>
   </div>
-  <% end %></div>
+  <% end %>
+</div>
 </div>
 
 
@@ -180,6 +193,21 @@
   autoclose: true,
   language: 'fr',
   startView: 1,
+  endDate: new Date(),
+});
+
+  $('from .new').onsubmit({
+  format: 'dd/mm/yyyy',
+  autoclose: true,
+  language: 'fr',
+  startView: 1,
+  endDate: new Date(),
+});
+
+  $('#dispo').datepicker({
+  format: 'dd/mm/yyyy',
+  language: 'fr',
+  multidate:true,
   endDate: new Date(),
 });
 </script>

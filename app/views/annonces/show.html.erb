@@ -1,74 +1,95 @@
 <p id="notice"><%= notice %></p>
-
-<div id="fiche">
-
+<div class="col-lg-9">
 	<div class="row">
+		<div class="col-lg-4">
+			<%=link_to @annonce.avatar.url , { 'data-toggle' => 'lightbox' } do %>
+			<% if @annonce.avatar.thumb.url.present? %>
+			<%= image_tag @annonce.avatar.thumb.url, width:'220', height:'277' %>
+			<% elsif %>				
+			<img alt="photo" width="220" height="277">
+			<% end -%>
+			<% end %>
+		</div>
+		<div class="col-lg-8">
+			<h1><%= @annonce.name %></h1>
+			<div class="row">
+				<div class="col-lg-6">
+					<p>Date de création : <%=@annonce.experience%></p>
+					<p>Niveau : <%= @annonce.level%></p>
+					<p>Temps moyen de préstation :<%= @annonce.avg_time%>min</p>
 
-		<div class=" col-lg-9 col-md-8 col-sm-6">
-
-			<div class="col-lg-3 col-md-2 col-sm-4">
-				
-
-				<%=link_to @annonce.avatar.url , { 'data-toggle' => 'lightbox' } do %>
-
-				<%= image_tag @annonce.avatar.thumb.url if @annonce.avatar.thumb.url.present? %>
-				<% end %>
-				<p>
-					<strong>Groupe:</strong>
-					<%= @annonce.name %>
-				</p>
-
-				<p>
-					<strong>Date de création :</strong>
-					<%= @annonce.experience %>
-				</p>
-
-				
-			</div>
-			<div class="panel panel-default col-lg-9 col-md-10 col-sm-8">
-				<div class="panel-body">
-					<p>
-						<strong>Genre:</strong>
-						<%= @annonce.style %>
-					</p>
-
-					<p>
-						<strong>Membre(s):</strong>
-						<% @annonce.membres.each do |membre| %>
-						<%= render :partial => "membres/show", :locals => {:membre => membre} %>
-						<% end %>
-					</p>
-
-
-					<p>
-						<strong>Description:</strong>
-						<%= @annonce.description %>
-					</p>
-
-
-					<p>
-						<strong>Lien(s):</strong>
-						<% @annonce.links.each do |link| %>
-						<p> <%= Link.sites[link.site].humanize.camelcase %> </p> <a href="<%= link.url %>" > <%= link.url %> </a>
-						<% end %>
-					</p>
+				</div>
+				<div class="col-lg-6">
+					<strong>Lien(s):</strong>
+					<% @annonce.links.each do |link| %>
+					<i class="fa fa-facebook"></i>
+					<p> <%= Link.sites[link.site].humanize.camelcase %> </p> <a href="<%= link.url %>" > <%= link.url %> </a>
+					<% end %>
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-3 col-md-3 col-sm-2"">
-
-			<% if user_signed_in? && @annonce.user_id != current_user.id%>
-			<%= render :partial => "resa", :locals => {:annonce => @annonce, :datesPrises => @datesPrises, :demande => Demande.new} %>
-			<% end %>
-		</div>
-
 	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<h1>Description </h1>
+			<p>
+				<%=@annonce.description%>
+			</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>Aperçu :</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<section id="song">  
+					</section> 	
+					<ul class="list-inline">
+
+						<% @annonce.previews.audios.each do |preview| %>
+						<li><%= link_to preview.file.file.filename, preview.file.url, :class => "play_song" %></li>
+						<% end %>
+
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+
+					<% @annonce.previews.images.each do |preview| %>
+					<%=link_to preview.file.url , { 'data-toggle' => 'lightbox' } do %>
+					<% if preview.file.url.present? %>
+					<%= image_tag preview.file.thumb.url %>
+					<% elsif %>				
+					<img alt="photo" width="220" height="277">
+					<% end -%>
+					<% end %>
+					<% end %>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<h1>Commentaires :</h1>
+		</div>
+	</div>
+</div>
+<div class="col-lg-3">
+	<% if user_signed_in? && @annonce.user_id != current_user.id%>
+	<%= render :partial => "resa", :locals => {:annonce => @annonce, :datesPrises => @datesPrises, :demande => Demande.new} %>
+	<% end %>
+</div>
+<div id="fiche">
+
 	<%= link_to 'Edit', sti_annonce_path(@type, @annonce, :edit) %> |
 	<%= link_to I18n.t('button.back'), sti_annonce_path(@type, nil) %>
-
 </div>
-
-
 
 <div id="popup"></div>
 
@@ -78,3 +99,5 @@
 		$(this).ekkoLightbox();
 	});
 </script>
+
+

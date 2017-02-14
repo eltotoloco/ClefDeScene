@@ -11,10 +11,30 @@ Inscription groupe:
 Ajouter une descirption à la création de demande
 
 
-Inscription bar :
+(Inscription bar :
 	-nom 
 	-adresse
 	-photos
 	-descripiton
 	-N°
+)
 
+
+x Ajouter niveau des artistes 
+x Ajouter temps moyen de préstation pour les danseurs/musiciens
+x Ajouter delai de notification
+x Ajouter temps de réservation
+x Ajouter prix par préstation
+ Ajouter notice avant création d'annonce avec animations
+
+
+
+
+Ajouter message quand pas d'annonces (user et recherche)
+Ajouter wizard ajout d'annonce
+Ajouter formulaire danseur
+Ajouter disponibilités
+Ajouter les genres de musique/dances
+Ajouter les filtres de recherches
+Ajouter wizard à la demande de reservation
+Ajouter enregistrement de la charge à la résa

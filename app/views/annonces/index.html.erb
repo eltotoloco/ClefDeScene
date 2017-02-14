@@ -1,29 +1,34 @@
+<% content_for :sidebar do %>
+<div class="col-md-2">
+	<ul class="nav nav-tabs nav-stacked">
+		<% Annonce.types.each do |type| %>
+		<li >	<%= link_to type, sti_annonce_path(type, nil) %></li>
+		<% end -%>
+	</ul>
+</div>
+<% end %>
 <p id="notice"><%= notice %></p>
 
-<ul class="nav catalogue nav-tabs nav-justified" >
-	<% if @type=='Annonce' %>	
-	<li id='toutes' role="presentation" class="active" > 
-		<% else %>
-		<li id='toutes' role="presentation"> 
-			<% end %>
-
-			<%= link_to "Toutes", {:controller => "annonces", :action => "catalogue", :type => "Annonce", :params => params} , :remote => true %>
-		</li>
-		
-		<% Annonce.types.each do |type| %>
-		<% if type == @type %>	
-		<li id='<%= type %>' role="presentation" class="active">
-			<% else %>
-			<li id='<%= type %>' role="presentation" >
-				<% end %>
-				<% libelle = "annonces.types.#{type}s".downcase %>
-				<%= link_to I18n.t(libelle), {:controller => "annonces", :action => "catalogue", :type => "#{type}",:params => params} , :remote => true %>
-			</li>
-			<% end %>
+<div class="row">
+	<div class="col-md-12">
+		<ul class="nav nav-tabs nav-justified">
+			<% Annonce.types.each do |type| %>
+			<li >	<%= link_to type, sti_annonce_path(type, nil) %></li>
+			<% end -%>
 		</ul>
-		<div id="content">
+	</div>
+</div>
+<div class="row">	
+<div class="col-lg-12 col-md-12 col-sm-12 col-lg-offset">
+		<%= render partial: 'static_pages/search_bar' %>
+	</div>
+</div>
+<div class="row">
+	<div id="content">
 
-			<%= render 'index' %>
+		<%= render 'index_list' %>
 
 
-		</div>
+	</div>
+</div>
+</div>

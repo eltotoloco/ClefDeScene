@@ -1,5 +1,8 @@
 ---
 fr:
+  carrierwave:
+  errors:
+    integrity: 'Here be an error message'
   activerecord:
     models:
       user: Utilisateur
@@ -25,6 +28,9 @@ fr:
         groups: "Groupes"
         photographers: "Photographes"
         annonces: "Annonces"
+        group: "Groupe"
+        photographer: "Photographe"
+        annonce: "Annonce"
   button:
     show: Voir
     add: Ajouter

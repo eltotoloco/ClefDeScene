@@ -1,0 +1,155 @@
+  <div class="row">
+    <section>
+      <div class="wizard">
+        <div class="wizard-inner">
+          <div class="connecting-line"></div>
+          <ul class="nav nav-tabs" role="tablist">
+
+            <li role="presentation" class="active">
+              <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
+                Informations
+              </a>
+            </li>
+
+            <li role="presentation" class="disabled">
+              <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
+                Paiement
+              </a>
+            </li>
+          </ul>
+        </div>
+        <%= bootstrap_form_for(demande, validate: false) do |f| %>
+        <% if demande.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(demande.errors.count, "error") %> prohibited this demande from being saved:</h2>
+
+          <ul>
+            <% demande.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+        <% end %>
+
+        <div class="tab-content">
+          <div class="tab-pane active" role="tabpanel" id="step1">
+            <h3>Informations</h3>
+
+            <div class="row">        
+              <div class="col-lg-3">
+                <div class="row">
+                  <div class="col-md-12">
+                    <% if demande.annonce.avatar.url.present? %>
+                    <%= image_tag(demande.annonce.avatar.url(:thumb)) %>
+                    <% elsif %>
+                    <img id="preview_avatar" width="165" height="208">
+                    <% end %>
+                  </div>
+                </div>
+                <%= f.hidden_field :annonce_id, value: demande.annonce_id %>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <p><%= demande.annonce.name %> </p>
+
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <p>Date de début : <%= demande.start_date %> </p>
+                        <%= f.hidden_field :start_date, value: demande.start_date %>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <p>Date de fin : <%= demande.end_date %> </p>
+                        <%= f.hidden_field :end_date, value: demande.end_date %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <%= f.label :address, class: "control-label" %>
+                      <%= f.text_field :address,  class: "form-control",hide_label: true,placeholder:"address",
+                      required:"" %>
+                    </div>
+                    <div class="form-group">
+                     <%= f.label :description, class: "control-label" %>
+                     <%= f.text_area :description,  class: "form-control",hide_label: true,placeholder:"description",
+                     required:"" %>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+           <ul class="list-inline pull-right">
+            <li><button type="button" class="btn btn-primary next-step"> Suivant</button></li>
+          </ul>
+        </div>
+        <div class="tab-pane" role="tabpanel" id="step2">
+          <h3>Step 2</h3>
+          <p>This is step 2</p>
+          <ul class="list-inline pull-right">
+            <li><button type="button" class="btn btn-default prev-step">Précédent</button></li>
+            <li><button type="button" class="btn btn-primary">Suivant</button></li>
+          </ul>
+        </div>
+        <div class="tab-pane" role="tabpanel" id="complete">
+          <h3>Complete</h3>
+          <p>You have successfully completed all steps.</p>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+
+
+<div class="actions">
+  <%= f.submit "Envoyer demande de réservation", class: "btn btn-primary", :id => "valider", :disabled => true %>
+</div>
+<% end %>
+<div class="row .payment-dialog-row">
+  <div class="col-lg-12">
+
+    <%= form_tag charges_path do %>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+
+    <button id="customButton" class="btn btn-large btn-primary">Paiement</button>
+
+    <script>
+      var handler = StripeCheckout.configure({
+        key: '<%= Rails.configuration.stripe[:publishable_key] %>',
+        token: function(response) {
+          console.log(response);
+          var tokenInput = $("<input type=hidden name=stripeToken />").val(response.id);
+          var emailInput = $("<input type=hidden name=stripeEmail />").val(response.email);
+          $(".new_demande").append(tokenInput).append(emailInput);
+                //$("#valider").prop("disabled",false);
+              }
+            });
+
+      document.getElementById('customButton').addEventListener('click', function(e) {
+        // Open Checkout with further options
+        handler.open({
+          name: 'Clef de Scene',
+          description: 'Prix <%= demande.annonce.price%>',
+          amount: '<%= demande.annonce.price%>'*100,
+       //   shippingAddress: true
+     });
+        e.preventDefault();
+      });
+    </script>
+    <% end -%>
+  </div> 
+</div>
+</div>

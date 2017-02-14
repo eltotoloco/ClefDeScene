@@ -1,4 +1,4 @@
-<%= nested_form_for annonce  do |f| %>
+<%= nested_form_for annonce, validate: true  do |f| %>
 <% if annonce.errors.any? %>
 <div id="error_explanation">
   <h2><%= pluralize(annonce.errors.count, "error") %> prohibited this annonce from being saved:</h2>

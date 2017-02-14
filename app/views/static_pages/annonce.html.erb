@@ -1,9 +1,21 @@
-<% Annonce.types.each do |type| %>
-<li id='<%= type %>'>
-	<% libelle = "annonces.types.#{type}s".downcase %>
-	<a href="">
-	</a>
-	<%= link_to I18n.t(libelle), sti_annonce_path(type, nil, :new), :class => "btn" %>
+<h3 class="text-center"> Nouvelle annonce </h3>
+<div class=" col-md-12 col-md-4">
+  <div class="row">
+    <% Annonce.types.each do |type| %>
+    <div class="col-md-4">
+      <% libelle = "annonces.types.#{type}".downcase %>
+      <%= link_to sti_annonce_path(type, nil, :new) do %>
+      <div class="thumbnail">
+        <img src="" alt="">
 
-</li>
-<% end %>
+        <div class="caption">
+         <h3><%= I18n.t(libelle) %></h3>
+         <p>...</p>
+       </div>
+     </div>
+     <% end %>
+   </div>
+   <% end %>
+ </div>
+</div>
+

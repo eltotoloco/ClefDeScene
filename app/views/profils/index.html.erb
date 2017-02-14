@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Profils</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Last name</th>
+      <th>First name</th>
+      <th>Date of birth</th>
+      <th>Avatar</th>
+      <th>Bio</th>
+      <th>Phone number</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @profils.each do |profil| %>
+      <tr>
+        <td><%= profil.last_name %></td>
+        <td><%= profil.first_name %></td>
+        <td><%= profil.date_of_birth %></td>
+        <td><%= profil.avatar %></td>
+        <td><%= profil.bio %></td>
+        <td><%= profil.phone_number %></td>
+        <td><%= link_to 'Show', profil %></td>
+        <td><%= link_to 'Edit', edit_profil_path(profil) %></td>
+        <td><%= link_to 'Destroy', profil, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Profil', new_profil_path %>

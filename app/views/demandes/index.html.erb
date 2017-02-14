@@ -2,13 +2,18 @@
 <div class="row">
 	<div class="row">
 
-		<%= render partial: 'static_pages/dashboard_nav_bar' %>
+		<%= render partial: 'static_pages/dashboard_nav_bar',:locals => { :active => 'Demandes' } %>
 	</div>
+
 	<div class="col-md-12">
-		<%= link_to "Envoyées", {:controller => "demandes", :action => "inbox", :type => "From"} , :remote => true %>
-		<%= link_to "Reçues", {:controller => "demandes", :action => "inbox", :type => "To"} , :remote => true %>
-		<div id="content">
-			<%= render 'index' %>
+		<div class="row">
+			<%= link_to "Envoyées",inbox_sent_path %>
+			<%= link_to "Reçues",  inbox_received_path %>
+		</div>
+		<div class="row">
+			<div id="content">
+				<%= render 'index' %>
+			</div>
 		</div>
 	</div>
 </div>

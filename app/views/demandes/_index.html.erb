@@ -1,20 +1,39 @@
 
 <% @demandes.each do |demande| %>
-<%= link_to demande do %>
 <div class="panel panel-default col-md-12  ">
 	<div class="panel-body">
-		<div class="row">
-			De : <%= demande.from_user.email %>
-			<%= demande.start_date %>
-			<%= demande.end_date %>
-			<%= demande.prix %>
-			<%= demande.statut %>
+		<%= (demande.unReadMessages!=0 ?  "<div class='row unread'>".html_safe :  "<div class='row'>".html_safe)  %>
+		<div class="col-lg-2">
+			<img>
+			
 		</div>
-		<div class="row">
-			<%= demande.messages.last.content if demande.messages.last.present?%>
+		<div class="col-lg-10">
+			<div class="row">
+				<div class="col-lg-12">
+			<%= link_to "Voir ",demande %>
+					<p>
+						<% if demande.from_user == current_user%>
+						A : <%= demande.to_user.email %>
+						<% else %>
+						De : <%= demande.from_user.email %>
+						<% end %>
+						pour <%=demande.annonce.name%>
+						du <%= demande.start_date %> au <%= demande.end_date %> 							
+					</p>
+				</div>
+				<div class="row">
+					<div class="col-lg-11">
+						<p>	<%= demande.messages.last.content if demande.messages.last.present?%>
+						</p>
 
+					</div>
+					<div class="col-lg-1">
+						<span class="glyphicon glyphicon-star"></span>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-<% end %>
+</div>
 <% end %>

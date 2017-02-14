@@ -55,7 +55,7 @@
   <div class="panel panel-default col-md-10 ">
     <div class="panel-body">
       <% @demande.messages.each do |message| %>
-
+        <% message.readingmessage if (message.to == current_user) %>
       <div class="row">
         <div class="panel panel-default col-md-10 ">
           <div class="panel-body">

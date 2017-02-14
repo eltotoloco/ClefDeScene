@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170106130517) do
+ActiveRecord::Schema.define(version: 20170209181458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,10 +22,14 @@ ActiveRecord::Schema.define(version: 20170106130517) do
     t.text     "description"
     t.string   "type"
     t.string   "style"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
     t.integer  "user_id"
     t.string   "token"
+    t.integer  "level"
+    t.integer  "min_days_for_booking"
+    t.integer  "price"
+    t.integer  "avg_time"
     t.index ["user_id"], name: "index_annonces_on_user_id", using: :btree
   end
 
@@ -49,8 +53,12 @@ ActiveRecord::Schema.define(version: 20170106130517) do
     t.text     "description"
     t.integer  "annonce_id"
     t.integer  "to_user_id"
+    t.integer  "payment_id"
+    t.string   "address"
+    t.string   "token"
     t.index ["annonce_id"], name: "index_demandes_on_annonce_id", using: :btree
     t.index ["from_user_id"], name: "index_demandes_on_from_user_id", using: :btree
+    t.index ["payment_id"], name: "index_demandes_on_payment_id", using: :btree
   end
 
   create_table "establishments", force: :cascade do |t|
@@ -67,8 +75,8 @@ ActiveRecord::Schema.define(version: 20170106130517) do
   create_table "groupes", force: :cascade do |t|
     t.string   "name",             default: "", null: false
     t.integer  "user_id"
-    t.string   "genre"
-    t.date     "date_de_creation"
+    t.string   "genre",                         null: false
+    t.date     "date_de_creation",              null: false
     t.text     "description"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
@@ -113,11 +121,9 @@ ActiveRecord::Schema.define(version: 20170106130517) do
   end
 
   create_table "membres", force: :cascade do |t|
-    t.string   "nom"
-    t.string   "instrument"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "annonce_id"
+    t.string  "nom"
+    t.string  "instrument"
+    t.integer "annonce_id"
     t.index ["annonce_id"], name: "index_membres_on_annonce_id", using: :btree
   end
 
@@ -125,20 +131,47 @@ ActiveRecord::Schema.define(version: 20170106130517) do
     t.integer  "from"
     t.integer  "to"
     t.text     "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "demande_id"
+    t.boolean  "read",       default: false
     t.index ["demande_id"], name: "index_messages_on_demande_id", using: :btree
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "last4"
+    t.decimal  "amount",             precision: 12, scale: 3
+    t.boolean  "success"
+    t.string   "authorization_code"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.integer  "demande_id"
+    t.index ["demande_id"], name: "index_payments_on_demande_id", using: :btree
   end
 
   create_table "previews", force: :cascade do |t|
     t.string   "type",          null: false
-    t.string   "file"
+    t.json     "file"
     t.integer  "annonce_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.string   "annonce_token"
     t.index ["annonce_id"], name: "index_previews_on_annonce_id", using: :btree
+  end
+
+  create_table "profils", force: :cascade do |t|
+    t.string   "last_name"
+    t.string   "first_name"
+    t.date     "date_of_birth"
+    t.string   "avatar"
+    t.text     "bio"
+    t.string   "phone_number"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_profils_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -152,7 +185,7 @@ ActiveRecord::Schema.define(version: 20170106130517) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.integer  "role"
+    t.integer  "role",                   default: 0,  null: false
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "confirmation_token"
@@ -174,7 +207,9 @@ ActiveRecord::Schema.define(version: 20170106130517) do
   add_foreign_key "annonces", "users"
   add_foreign_key "availabilities", "annonces"
   add_foreign_key "demandes", "annonces"
+  add_foreign_key "demandes", "payments"
   add_foreign_key "demandes", "users", column: "from_user_id"
+  add_foreign_key "demandes", "users", column: "to_user_id"
   add_foreign_key "establishments", "users"
   add_foreign_key "groupes", "users"
   add_foreign_key "histo_demandes", "demandes"
@@ -183,7 +218,9 @@ ActiveRecord::Schema.define(version: 20170106130517) do
   add_foreign_key "links", "annonces"
   add_foreign_key "membres", "annonces"
   add_foreign_key "messages", "demandes"
+  add_foreign_key "payments", "demandes"
   add_foreign_key "previews", "annonces"
+  add_foreign_key "profils", "users"
   add_foreign_key "utilises", "annonces"
   add_foreign_key "utilises", "materiels"
 end

@@ -10,7 +10,9 @@ class MessagesController < ApplicationController
   # GET /messages/1
   # GET /messages/1.json
   def show
-  end
+    @message.readingmessage if @message.to == current_user
+
+    end
 
   # GET /messages/new
   def new
@@ -71,4 +73,4 @@ class MessagesController < ApplicationController
     def message_params
       params.require(:message).permit(:from, :to, :demande_id, :content)
     end
-end
+  end

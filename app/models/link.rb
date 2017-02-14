@@ -4,6 +4,6 @@ class Link < ApplicationRecord
 
 
   def self.sites
-  	%w(Facebook SoundCloud Other)
+  	%w(Facebook YouTube SoundCloud Other)
   end
 end

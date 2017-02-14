@@ -1,32 +1,65 @@
+	<p id="notice"><%= notice %></p>
+
 	<div class="row">
-		<div class="row">
-
-			<%= render partial: 'static_pages/dashboard_nav_bar' %>
+		<%= render partial: 'static_pages/dashboard_nav_bar',:locals => { :active => 'Annonces' } %>
+	</div>
+	<div class="row">
+		<div class="col-lg-3">
+			<div class="row">
+				<ul class="nav nav-pills nav-stacked">
+					<li class="active"><a> Mes annonces</a> </li>
+					<li> <a>Mes réservations</a></li>
+					<li><%= link_to "Ajouter une annonce", new_annonce_path, class: "" %></li>
+				</ul>
+			</div>			
 		</div>
-		<div class="row">
-		<div class="col-md-3">
-				<%= link_to "Ajouter une annonce", new_annonce_path, class: "btn btn-danger" %>
-			</div>
-			<div class="col-md-6">
+		<div class="col-lg-9 annonce-list">
 
-				<% @annonces.each do |annonce| %>
-				<div class="row">				
-					<div class="panel panel-default col-md-8">
-						<div class="panel-body">
-							<div class="row">
-								<h3><%= annonce.name%></h3>
+			<% @annonces.each do |annonce| %>
+
+			<div class="row annonce-item">
+				<div class="annonce-container">
+					<div class="col-lg-11">
+						<div class="row">
+							<div class="col-lg-3 col-md-4 col-sm-4 ">
+								<% if annonce.avatar.url.present? %>
+								<%= image_tag(annonce.avatar.url(:thumb)) %>
+								<% elsif %>
+								<img id="preview_avatar" width="165" height="208">
+								<% end %>
+
 							</div>
-							<div class="row">
-								<%= image_tag annonce.avatar_url(:small_thumb) if annonce.avatar.url.present? %>
-							</div>
-							<div class="row">
-								<%= link_to  I18n.t('button.edit'), sti_annonce_path(annonce.type, annonce, :edit) %>
-								<%= link_to  I18n.t('button.show'), annonce %>
+							<div class="col-lg-9 col-md-8 col-sm-8">
+								<h1 class="annonce-name"><%= annonce.name%></h1>
+								<%= link_to annonce_path(annonce), data: { confirm: I18n.t('button.are_you_sure')},class: "annonce-glyphicon", method: :delete do %>
+								<i class="glyphicon glyphicon-remove"></i>
+								<% end -%>
+								<%= link_to sti_annonce_path(annonce.type, annonce, :edit), class: "annonce-glyphicon" do %>
+								<i class="glyphicon glyphicon-pencil"></i>
+								<% end -%>
 							</div>
 						</div>
 					</div>
+
+					<div class="col-lg-1">
+						<div class="row">
+							<%= link_to annonce_path(annonce), data: { confirm: I18n.t('button.are_you_sure')}, method: :delete do %>
+							<i class="glyphicon glyphicon-remove"></i>
+							<% end -%>
+						</div>
+						<div class="row">
+							<%= link_to sti_annonce_path(annonce.type, annonce, :edit) do %>
+							<i class="glyphicon glyphicon-pencil"></i>
+							<% end -%>
+						</div>
+						<div class="row">
+							<%= link_to annonce  do %>
+							<i class="glyphicon glyphicon-zoom-in"></i>
+							<% end -%>
+						</div>
+					</div>
 				</div>
-				<% end %>
 			</div>
+			<% end %>
 		</div>
 	</div>

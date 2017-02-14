@@ -1,4 +1,4 @@
-  <%= bootstrap_form_for(demande, :remote => true, validate: false) do |f| %>
+  <%= bootstrap_form_for(demande, validate: false) do |f| %>
   <% if demande.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(demande.errors.count, "error") %> prohibited this demande from being saved:</h2>
@@ -12,35 +12,145 @@
   <% end %>
 
 
-<div class="field">
+  <div class="field">
     <%= f.label :start_date %>
     <div class="input-group date">
-   <%= demande.start_date %>
+     <%= demande.start_date %>
+     <%= f.hidden_field :start_date, value: demande.start_date %>
 
-      <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-    </div>
-  </div>
+     <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+   </div>
+ </div>
 
-  <div class="field">
-    <%= f.label :end_date %>
-    <div class="input-group date">
+ <div class="field">
+  <%= f.label :end_date %>
+  <div class="input-group date">
     <%= f.text_field :end_date,hide_label: true, :class => "data-provide" %>
 
-      <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+    <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+  </div>
+</div>
+
+
+<%= f.hidden_field :annonce_id, value: @demande.annonce_id %>
+
+
+
+<div class="field">
+  <%= f.label :prix %>
+  <%= f.number_field :prix,hide_label: true %>
+</div>
+
+<div class="panel panel-default credit-card-box col-md-6">
+  <div class="panel-heading display-table" >
+    <div class="row display-tr" >
+      <h3 class="panel-title display-td" >Payment Details</h3>
+      <div class="display-td" >                            
+        <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+      </div>
+    </div>                    
+  </div>
+  <div class="panel-body">
+    <%= f.fields_for :payment do |payment| %>
+
+    <div class="row">
+      <div class="col-xs-6 col-md-6">
+        <div class="form-group">
+          <%= payment.label :first_name, class: "control-label" %>
+          <%= payment.text_field :first_name,  class: "form-control",hide_label: true,placeholder:"First Name",
+          required:"" %>
+
+
+        </div>
+      </div>
+      <div class="col-xs-6 col-md-6 pull-right">
+        <div class="form-group">
+          <%= payment.label :last_name, class: "control-label" %>
+          <%= payment.text_field :last_name,  class: "form-control",hide_label: true,placeholder:"Last Name",
+          required:"" %>
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <%= payment.label :credit_card_number, class: "control-label" %>
+          <%#= payment.text_field :credit_card_number, class: "form-control",hide_label: true %>
+          <%= payment.text_field :credit_card_number,  class: "form-control",hide_label: true,  type:"tel", "data-stripe" => "number" ,placeholder:"Valid Card Number",
+          autocomplete:"cc-number",
+          required:"" %>
+        </div>
+      </div>                            
     </div>
   </div>
+  <div class="row">
+    <!--
+    <div class="col-xs-4 col-md-4">
 
-  
-  <%#= f.hidden_field :end_date, value: :start_date %>
+      <div class="form-group">
+        <%= payment.label :expiration_month, class: "control-label" %>
+        <%#= payment.text_field :credit_card_number, class: "form-control",hide_label: true %>
+        <%= payment.text_field :expiration_month,  class: "form-control",hide_label: true,  type:"tel",placeholder:"MM",
+        autocomplete:"cc-exp",
+        required:"" %>
 
-  
+      </div>
+    </div>
+    <div class="col-xs-4 col-md-4">
+      <div class="form-group">
+        <%= payment.label :expiration_year, class: "control-label" %>
+        <%#= payment.text_field :credit_card_number, class: "form-control",hide_label: true %>
+        <%= payment.text_field :expiration_year,  class: "form-control",hide_label: true,  type:"tel",placeholder:"YYYY",
+        autocomplete:"cc-exp",
+        required:"" %>
 
-  <div class="field">
-    <%= f.label :prix %>
-    <%= f.number_field :prix,hide_label: true %>
+      </div>
+    </div>-->
+    <div class="col-xs-4 col-md-4">
+      <%= label_tag "Card Expires", nil, required: true %>
+      <%= select_tag :expiration_month, options_for_select(Date::MONTHNAMES.compact.each_with_index.map { |name,i| ["#{i+1} - #{name}", i+1] }), include_blank: false, "data-stripe" => "exp-month", class: "span2" %>
+      <%= select_tag :expiration_year, options_for_select((Date.today.year..(Date.today.year+10)).to_a), include_blank: false, "data-stripe" => "exp-year", class: "span1" %>
+    </div>
+    <div class="col-xs-4 col-md-4 pull-right">
+      <div class="form-group">
+        <%= payment.label :card_security_code, class: "control-label" %>
+        <%#= payment.text_field :credit_card_number, class: "form-control",hide_label: true %>
+        <%= payment.text_field :card_security_code,  class: "form-control",hide_label: true,  type:"tel", "data-stripe" => "cvv" ,placeholder:"CVC",
+        autocomplete:"cc-csc",
+        required:"" %>
+      </div>
+    </div>
+
+    
+
+    <%= payment.hidden_field :demande_id, value: @demande.annonce_id %>
+    <%= payment.hidden_field :amount, value: @demande.prix %>
+
   </div>
-
   <div class="actions">
-    <%= f.submit "Envoyer demande de réservation", class: "btn btn-primary" %>
+    <%= f.submit "Registration Payment", class: "btn", style: "color: white;background: rgb(242, 118, 73);" %>
   </div>
-  <% end %>
+
+
+  <div class="row" style="display:none;">
+    <div class="col-xs-12">
+      <p class="payment-errors"></p>
+    </div>
+  </div>
+  <% end -%>
+</div>
+
+
+<div class="actions">
+  <%= f.submit "Envoyer demande de réservation", class: "btn btn-primary" %>
+</div>
+<% end %>
+
+<%#= javascript_include_tag "https://js.stripe.com/v2/" %>
+<script>
+
+  Stripe.setPublishableKey('#{Rails.application.secrets.stripe_publishable_key}');
+
+
+</script>

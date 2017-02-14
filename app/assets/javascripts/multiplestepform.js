@@ -1,103 +1,53 @@
-$( document ).on('turbolinks:load', function() {
- var navListItems = $('div.setup-panel div a'),
- allWells = $('.setup-content'),
- allNextBtn = $('.nextBtn');
- allBackBtn = $('.backBtn');
+$(document).ready(function() {  
+     var audioSection = $('section#song');  
+     $('a.play_song').click(function() {  
 
- allWells.hide();
+     var audio = $('<audio>', {  
+         controls : 'controls'  
+     });  
 
- navListItems.each( function (){
+     var url = $(this).attr('href');  
+     $('<source>').attr('src', url).appendTo(audio);  
+     audioSection.html(audio);  
+     return false;       }); 
 
-  if( $(this).hasClass('disabled')){
-    $(this).off('click');
-  }
+       $('#calendar').fullCalendar({
+        // put your options and callbacks here
+    }) 
+ }); 
+
+$(document).ready(function () {
+    //Initialize tooltips
+    $('.nav-tabs > li a[title]').tooltip();
+    
+    //Wizard
+    $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+
+        var $target = $(e.target);
+    
+        if ($target.parent().hasClass('disabled')) {
+            return false;
+        }
+    });
+
+    $(".next-step").click(function (e) {
+
+        var $active = $('.wizard .nav-tabs li.active');
+        $active.next().removeClass('disabled');
+        nextTab($active);
+
+    });
+    $(".prev-step").click(function (e) {
+
+        var $active = $('.wizard .nav-tabs li.active');
+        prevTab($active);
+
+    });
 });
- navListItems.click(function (e) {
-  e.preventDefault();
-  var $target = $($(this).attr('href')),
-  $item = $(this);
 
-  if (!$item.hasClass('disabled')) {
-    navListItems.removeClass('btn-primary').addClass('btn-default');
-    $item.addClass('btn-primary');
-    allWells.hide();
-    $target.show();
-    $target.find('input:eq(0)').focus();
-  }
-});
-
- var fileUploadErrors = {
-  maxFileSize: 'File is too big',
-  minFileSize: 'File is too small',
-  acceptFileTypes: 'Filetype not allowed',
-  maxNumberOfFiles: 'Max number of files exceeded',
-  uploadedBytes: 'Uploaded bytes exceed file size',
-  emptyResult: 'Empty file upload result'
+function nextTab(elem) {
+    $(elem).next().find('a[data-toggle="tab"]').click();
 }
-
-
-
-allNextBtn.click(function(){
- /* var curStep = $(this).closest(".setup-content"),
- curStepBtn = curStep.attr("id"),
- nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
- curInputs = curStep.find("input[type='text'],input[type='url']");
- var valid = true;
- // this will cycle through all visible inputs and attempt to validate all of them.
- // if validations fail 'valid' is set to false
- $('[data-validate] input:visible').each(function() {
-  var settings = window.ClientSideValidations.forms[this.form.id]
-  if (!$(this).isValid(settings.validators)) {
-    valid = false
-  }
-});
-if(valid){
-  nextStepWizard.removeClass('disabled').trigger('click');
-
-
+function prevTab(elem) {
+    $(elem).prev().find('a[data-toggle="tab"]').click();
 }
-// if any of the inputs are invalid we want to disrupt the click event
-return valid;*/
-
-
-var curStep = $(this).closest(".setup-content"),
-curStepBtn = curStep.attr("id"),
-nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-curInputs = curStep.find("input[type='text'],input[type='url']"),
-isValid = true;
-
-$(".form-group").removeClass("has-error");
-for(var i=0; i<curInputs.length; i++){
-  if (!curInputs[i].validity.valid){
-    isValid = false;
-    $(curInputs[i]).closest(".form-group").addClass("has-error");
-  }
-}
-
-
-if (isValid){
-  $("#errors").html("");
-  nextStepWizard.removeClass('disabled').trigger('click');
-}else{
-  $("#errors").html("Ces champs sont obligatoires");
-}
-});
-
-
-allBackBtn.click( function(){
- var curStep = $(this).closest(".setup-content"),
- curStepBtn = curStep.attr("id"),
- previousStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a");
- previousStepWizard.trigger('click');
-});
-$('div.setup-panel div a.btn-primary').trigger('click');
-
-
-
-
-})
-$( document ).ready(function() {
-
-
-
-});
