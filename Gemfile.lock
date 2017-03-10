@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/stripe/stripe-ruby
-  revision: 98c42e0b69d2c9e3be64d62f13e8d7b6d44ee3e5
+  revision: ea90ddb6d3748be5c1176b1e35bc4d9a0e6d1a60
   specs:
-    stripe (1.58.0)
-      rest-client (>= 1.4, < 4.0)
+    stripe (2.0.0)
+      faraday (~> 0)
 
 GEM
   remote: https://rubygems.org/
@@ -90,6 +90,8 @@ GEM
     erubis (2.7.0)
     excon (0.54.0)
     execjs (2.7.0)
+    faraday (0.11.0)
+      multipart-post (>= 1.2, < 3)
     figaro (1.1.1)
       thor (~> 0.14)
     fog-aws (1.1.0)
@@ -135,6 +137,7 @@ GEM
     mini_portile2 (2.1.0)
     minitest (5.10.1)
     multi_json (1.12.1)
+    multipart-post (2.0.0)
     nested_form (0.3.2)
     nio4r (1.2.1)
     nokogiri (1.7.0.1-x86-mingw32)

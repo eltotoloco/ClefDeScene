@@ -31,10 +31,23 @@ x Ajouter prix par préstation
 
 
 Ajouter message quand pas d'annonces (user et recherche)
-Ajouter wizard ajout d'annonce
+x Ajouter wizard ajout d'annonce
 Ajouter formulaire danseur
 Ajouter disponibilités
 Ajouter les genres de musique/dances
 Ajouter les filtres de recherches
 Ajouter wizard à la demande de reservation
 Ajouter enregistrement de la charge à la résa
+
+
+
+
+06/03/2017
+
+Si pas d'avis sur l'artiste ne pas affihcer la tab avis
+Rezdirection sur page  choix particulier/professionnel 
+A l'inscription verifier l'age ( >18)
+Ajouter la liste des genres de musique
+ -- retester jquery file upload
+
+ Pour les photographes -> permettre la création de galleries photo (limitée pour le moment et auguementable via payement)

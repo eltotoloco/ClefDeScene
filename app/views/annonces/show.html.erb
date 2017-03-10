@@ -19,6 +19,7 @@
 					<p>Temps moyen de préstation :<%= @annonce.avg_time%>min</p>
 
 				</div>
+				<%if @annonce.links.present?%>
 				<div class="col-lg-6">
 					<strong>Lien(s):</strong>
 					<% @annonce.links.each do |link| %>
@@ -26,6 +27,7 @@
 					<p> <%= Link.sites[link.site].humanize.camelcase %> </p> <a href="<%= link.url %>" > <%= link.url %> </a>
 					<% end %>
 				</div>
+				<% end -%>
 			</div>
 		</div>
 	</div>
@@ -44,8 +46,10 @@
 					<h1>Aperçu :</h1>
 				</div>
 			</div>
+			<%if @annonce.previews.audios.present? %>
 			<div class="row">
 				<div class="col-md-12">
+					<h2> Audio </h2>
 					<section id="song">  
 					</section> 	
 					<ul class="list-inline">
@@ -57,9 +61,11 @@
 					</ul>
 				</div>
 			</div>
+			<% end -%>
+			<%if @annonce.previews.images.present? %>
 			<div class="row">
 				<div class="col-md-12">
-
+					<h2>Images</h2>
 					<% @annonce.previews.images.each do |preview| %>
 					<%=link_to preview.file.url , { 'data-toggle' => 'lightbox' } do %>
 					<% if preview.file.url.present? %>
@@ -72,6 +78,7 @@
 
 				</div>
 			</div>
+			<% end -%>
 		</div>
 	</div>
 	<div class="row">

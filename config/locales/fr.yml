@@ -23,14 +23,19 @@ fr:
         restrict_dependent_destroy:
           has_one: "Vous ne pouvez pas supprimer l'enregistrement car une personne à charge %{record} existe"
           has_many: "Vous ne pouvez pas supprimer l'enregistrement parce que les %{record} dépendants existent"
-  annonces:
-    types:
-        groups: "Groupes"
-        photographers: "Photographes"
-        annonces: "Annonces"
-        group: "Groupe"
-        photographer: "Photographe"
-        annonce: "Annonce"
+  annonces_types:
+        groups: "groupes"
+        photographers: "photographes"
+        annonces: "annonces"
+        group: "groupe"
+        photographer: "photographe"
+        annonce: "annonce"
+        Groups: "Groupes"
+        Photographers: "Photographes"
+        Annonces: "Annonces"
+        Group: "Groupe"
+        Photographer: "Photographe"
+        Annonce: "Annonce"
   button:
     show: Voir
     add: Ajouter

@@ -1,7 +1,7 @@
-<%= form_tag sti_annonce_path(@type, nil), :method => 'get', class: 'navbar-form' , remote: true do %>
-<%= select_tag :by_type,options_for_select(Annonce.types,params[:by_type]),{class: 'form-control', :onchange=>"$(this.form).submit();"} if !@type.present?%>
+<%= form_tag sti_annonce_path('annonces',nil), :method => 'get', class: 'navbar-form'  do %>
+<%= select_tag :by_type,options_for_select(annonces_types_options,params[:by_type]),{class: 'form-control'}%> <%#:onchange=>"$(this.form).submit();"%>
 <%= select_tag :by_style,options_for_select(['Blues','Jazz','Rock'],params[:by_style]),{class: 'form-control', :onchange=>"$(this.form).submit();"} if @type == 'Group'%>
-<%= text_field_tag :by_name, params[:by_name], class: 'form-control', placeholder: 'Search for...'%>
+<%= text_field_tag :by_name, params[:by_name], class: 'form-control', placeholder: 'Nom de l\'artiste'%>
 <%= date_field_tag :not_booked, params[:not_booked], class: 'form-control' %>
 <%= submit_tag "Rechercher", class: "btn btn-default", :onclick=>"$(this.form).submit();"%>
 <% end %>

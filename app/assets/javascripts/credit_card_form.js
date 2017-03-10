@@ -1,4 +1,5 @@
-/*jQuery(function ($) {
+jQuery(function ($) {
+
 	var show_error, stripeResponseHandler;
 	$("#new_demande").submit(function (event) {
 		var $form;
@@ -16,9 +17,11 @@
 			$form.find("input[type=submit]").prop("disabled", false);
 		} else {
 			token = response.id;
-			$form.append($("<input type=\"hidden\" name=\"registration[card_token]\" />").val(token));
+			var tokenInput = $("<input type=hidden name=stripeToken />").val(response.id);
+			var emailInput = $("<input type=hidden name=stripeEmail />").val(response.email);
+			$(".new_demande").append(tokenInput).append(emailInput);
 			$("[data-stripe=number]").remove();
-			$("[data-stripe=cvv]").remove();
+			$("[data-stripe=cvc]").remove();
 			$("[data-stripe=exp-year]").remove();
 			$("[data-stripe=exp-month]").remove();
 			$form.get(0).submit();
@@ -31,4 +34,10 @@
 		$('.alert').delay(5000).fadeOut(3000);
 		return false;
 	};
-});*/
+});
+
+
+ $(document).ready(function(){
+ 		$('input.cc-number').payment('formatCardNumber');
+
+ });

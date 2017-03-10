@@ -28,7 +28,7 @@ gem 'bootstrap_form'
 
 gem 'activemerchant'
 
-gem 'stripe', git: 'https://github.com/stripe/stripe-ruby'
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 gem 'carrierwave', '~> 1.0'
 
 gem 'figaro'

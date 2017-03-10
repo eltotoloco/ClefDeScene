@@ -44,7 +44,12 @@ end
 
     @demande.from_user_id = current_user.id
     @demande.to_user_id = Annonce.by_id(@demande.annonce_id).user_id
-    token = params[:stripeToken]
+    if !params[:stripeToken].present?
+      @demande.errors.add(:token, :blank, message: "cannot be nil")
+      Rails.logger.debug @demande.errors.full_messages 
+      render :new 
+    else
+      token = params[:stripeToken]
 
     # Create a Customer:
     customer = Stripe::Customer.create(
@@ -65,8 +70,8 @@ end
       if @message.save
         redirect_to @demande.annonce, notice: 'Demande créée'
       else
-        Rails.logger.debug @demande.errors.full_messages 
 
+        Rails.logger.debug @demande.errors.full_messages 
         render :new 
       end
     else
@@ -75,27 +80,27 @@ end
       render :new 
     end
   end
-
-  def inbox 
-    if params[:type] == "received"
-      @demandes = current_user.received_demandes
-    else
-      @demandes = current_user.sent_demandes
-    end
-
-    respond_to do |format|
-      format.html {render :index }
-      format.js
-    end
-
-  end
-
-  def mes_demandes
-   if params[:type] == "received"
+end
+def inbox 
+  if params[:type] == "received"
     @demandes = current_user.received_demandes
   else
     @demandes = current_user.sent_demandes
   end
+
+  respond_to do |format|
+    format.html {render :index }
+    format.js
+  end
+
+end
+
+def mes_demandes
+ if params[:type] == "received"
+  @demandes = current_user.received_demandes
+else
+  @demandes = current_user.sent_demandes
+end
 end
 
 def accept
@@ -159,7 +164,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def demande_params
-      params.require(:demande).permit(:annonce_id, :start_date, :end_date,:address, :prix, :statut, :token,  payment_attributes: [:id,:first_name,:last_name,:card_security_code,:credit_card_number,:expiration_month,:expiration_year,:amount])
+      params.require(:demande).permit(:annonce_id, :start_date, :end_date,:address,:description, :prix, :statut, :token,  payment_attributes: [:id,:first_name,:last_name,:card_security_code,:credit_card_number,:expiration_month,:expiration_year,:amount])
     end
 
     def indexByUser(user_id)

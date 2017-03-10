@@ -46,7 +46,7 @@
       </p>
       <% if @demande.en_attente?%>
       <%= link_to "Accepter", accept_demande_path(id: @demande.id, statut: "confirmee"), class: "btn btn-success" %>
-      <%= link_to "Refuser", refuse_demande_path(@demande), class: "btn btn-danger", remote: true %>
+      <%= link_to "Refuser", accept_demande_path(id: @demande.id, statut: "refusee"), class: "btn btn-danger", remote: true %>
       <% end %>
     </div>
   </div>

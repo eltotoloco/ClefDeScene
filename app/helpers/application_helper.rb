@@ -10,4 +10,10 @@ module ApplicationHelper
 	def devise_mapping
 		@devise_mapping ||= Devise.mappings[:user]
 	end
+
+	def annonces_types_options
+    Annonce.types.map do |k,v| 
+      [t(k, scope: :annonces_types), v]
+    end
+  end
 end
