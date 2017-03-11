@@ -358,7 +358,7 @@
       $.each(dispos,function(index,value){
       inputStart = $("<input type=hidden name=group[availabilities_attributes]["+index+"][start_date]>").val(value);
       inputEnd = $("<input type=hidden name=group[availabilities_attributes]["+index+"][end_date]>").val(value);
-      $(".edit_group").append(inputStart).append(inputEnd);
+      $(".new_group").append(inputStart).append(inputEnd);
     });
   });
 
@@ -435,11 +435,12 @@
   function mergedates (){
     dispos = [];
     var date;
+    var dateInput
     $('[id^=dispo]').each(function(){
        $.each($( this ).datepicker("getDates"),function(index,value){
         date = new Date(value);
-        console.log((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
-        dispos.push((date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear());
+        console.log( date.getDate() + '/' + (date.getMonth() + 1) + '/' +  date.getFullYear());
+        dispos.push(date.getDate() + '/' + (date.getMonth() + 1) + '/' +  date.getFullYear());
        });
       //$.merge(dispos, dates)
     });

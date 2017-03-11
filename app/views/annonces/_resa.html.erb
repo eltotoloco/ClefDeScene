@@ -1,4 +1,4 @@
-  <%= bootstrap_form_for( demande, url: new_booking_path) do |f| %>
+  <%= bootstrap_form_for( demande, url: new_booking_path, id: 'resa') do |f| %>
   <% if demande.errors.any? %>
   <div id="error_explanation">
     <h2><%= pluralize(@demande.errors.count, "error") %> prohibited this demande from being saved:</h2>
@@ -25,17 +25,30 @@
 
    var startDate ="";
    var endDate="";
+   var datesDispo = <%= raw @datesDispo %>; 
+   console.log(datesDispo);
 
    $('.input-daterange').datepicker({
     format: 'dd/mm/yyyy',
     autoclose: true,
     language: 'fr',
     startDate: new Date(),
-    datesDisabled: <%= raw @datesPrises %>
-  });
+   // datesDisabled: <%= raw @datesPrises %>,
+   beforeShowDay: function(dt){ 
+            // use dt.getDay() to restrict to certain days of the week
+            // or a custom function like "available" below to do more complex things
+            if (available(dt)) {
+              return [true, 'available'];
+            } else{
+              return false;
+            }
+          }
+
+        });
 
    $('.input-daterange #start').datepicker().on("show",function(e) {
-    
+     console.log(datesDispo);
+
    }).on("input change", function (e) {
     startDate = e.target.value;
     $('.input-daterange #end').datepicker('setStartDate', startDate);
@@ -47,7 +60,17 @@
     endDate = e.target.value;
     <% %>
   });
-
+   function available(date) {
+    dmy =  ('0' + date.getDate()).slice(-2) + '/'
+    + ('0' + (date.getMonth()+1)).slice(-2) + '/'
+    + date.getFullYear();
+    console.log(dmy);
+    if ($.inArray(dmy, datesDispo) != -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 </script>
 <%#= f.hidden_field :end_date, value: :start_date %>

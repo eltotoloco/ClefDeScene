@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/stripe/stripe-ruby
-  revision: ea90ddb6d3748be5c1176b1e35bc4d9a0e6d1a60
+  revision: 8f817b83653f75560029d4a3d52e029674a5f3a3
   specs:
-    stripe (2.0.0)
+    stripe (2.0.1)
       faraday (~> 0)
 
 GEM

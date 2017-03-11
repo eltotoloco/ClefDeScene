@@ -1,13 +1,7 @@
-<% content_for :head do %>
 
-  
-<script type="text/javascript">
-  Stripe.setPublishableKey('<%= Rails.configuration.stripe[:publishable_key] %>');
-</script>
-<% end %>
 
 <div class="row">
-  <%= bootstrap_form_for(demande, validate: false) do |f| %>
+  <%= bootstrap_form_for(demande, validate: false, id: 'payment-form') do |f| %>
   <% if demande.errors.any? %>
   <div id="error_explanation">
    <h2><%= pluralize(demande.errors.count, "error") %> prohibited this demande from being saved:</h2>
@@ -135,7 +129,7 @@
 
       <ul class="list-inline pull-right">
         <li><button type="button" class="btn btn-default prev-step">Précédent</button></li>
-        <li><%= f.submit "Envoyer demande de réservation", class: "btn btn-primary", :id => "valider" %></li>
+        <li><%= f.submit "Envoyer demande de réservation", class: "btn btn-primary" %></li>
       </ul>
     </div>
     <% end %>

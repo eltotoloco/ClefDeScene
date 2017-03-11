@@ -48,22 +48,41 @@ class AnnoncesController < ApplicationController
 
     def show
       @demande = Demande.new
+      @datesDispo = []
       @datesPrises = []
-      Rails.logger.debug @annonce.previews.inspect
-    end
-
-    def getBookedDates 
-     @annonce.demandes.confirmee.each do |demande| 
-      @start = demande.start_date.strftime("%d/%m/%Y")
-      @end = demande.end_date.strftime("%d/%m/%Y")
+      @annonce.demandes.confirmee.each do |demande| 
+        @start = demande.start_date.strftime("%d/%m/%Y")
+        @end = demande.end_date.strftime("%d/%m/%Y")
+        (@start.to_date..@end.to_date).each do |dates|
+         @datesPrises << dates.strftime("%d/%m/%Y")
+       end    
+     end   
+     @annonce.availabilities.each do |availability| 
+      @start = availability.start_date.strftime("%d/%m/%Y")
+      @end = availability.end_date.strftime("%d/%m/%Y")
       (@start.to_date..@end.to_date).each do |dates|
-       @datesPrises << dates.strftime("%d/%m/%Y")
+       @datesDispo.push(dates.strftime("%d/%m/%Y"))
      end    
    end   
 
-   respond_to do |format|
-    format.js
-  end
+
+   Rails.logger.debug @annonce.previews.inspect
+   Rails.logger.debug @datesDispo.inspect
+ end
+
+ def getBookedDates 
+   @annonce.demandes.confirmee.each do |demande| 
+    @start = demande.start_date.strftime("%d/%m/%Y")
+    @end = demande.end_date.strftime("%d/%m/%Y")
+    (@start.to_date..@end.to_date).each do |dates|
+     @datesPrises << dates.strftime("%d/%m/%Y")
+   end    
+ end   
+
+ respond_to do |format|
+  format.js
+  format.html
+end
 end
 
 def new
@@ -79,7 +98,7 @@ def new
   end
 
   def edit
-  1.times {@annonce.links.build}
+    1.times {@annonce.links.build}
 
   end
 

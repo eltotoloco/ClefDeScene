@@ -17,6 +17,9 @@
 	<%= stylesheet_link_tag "calendar" %>
 	<%= javascript_include_tag 'demandes' %>
 
+  <script type="text/javascript">
+    Stripe.setPublishableKey('<%= Rails.configuration.stripe[:publishable_key] %>');
+  </script>
 </head>
 
 <body>
