@@ -72,6 +72,15 @@
     }
   }
 
+  $("#new_demande").submit(function (event) {
+    var $form;
+    $form = $(this);
+    $form.find("input[type=submit]").prop("disabled", true);
+    
+    return false;
+  });
+
+
 </script>
 <%#= f.hidden_field :end_date, value: :start_date %>
 

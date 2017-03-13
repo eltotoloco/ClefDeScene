@@ -10,7 +10,7 @@ class Demande < ApplicationRecord
 	validates :from_user_id, presence: true
 	validates :to_user_id, presence: true
 	validates :annonce_id, presence: true
-	validates :token, presence: true
+	validates :token
 	validates :address, presence: true
 	validates :description, presence: true
 
